@@ -1,3 +1,18 @@
+### Stage 0: Build common types library
+FROM node:20 as build-common-types
+
+USER node
+
+WORKDIR /app/call-common-types
+
+COPY --chown=node:node types/ ./
+
+RUN npm install && \
+	npm run build && \
+	npm pack && \
+	rm -rf node_modules dist
+
+
 ### Stage 1: Build the frontend
 FROM node:20 as build-frontend
 
@@ -8,6 +23,7 @@ WORKDIR /app/frontend
 ARG BASE_HREF=/
 
 COPY --chown=node:node frontend/ ./
+COPY --from=build-common-types /app/call-common-types/openvidu-call-common-types-**.tgz ./
 
 RUN npm install && \
 	npm run lib:build && \
@@ -24,6 +40,7 @@ USER node
 WORKDIR /app/backend
 
 COPY --chown=node:node backend/package*.json ./
+COPY --from=build-common-types /app/call-common-types/openvidu-call-common-types-**.tgz ./
 
 RUN npm install
 
@@ -42,6 +59,7 @@ FROM node:20-alpine as production
 
 WORKDIR /opt/openvidu-call
 
+COPY --from=build-common-types /app/call-common-types/openvidu-call-common-types-**.tgz ./
 COPY --from=build-backend /app/backend/dist ./dist
 COPY --from=build-backend /app/backend/package*.json ./
 
