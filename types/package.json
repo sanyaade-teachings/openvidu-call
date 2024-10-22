@@ -1,0 +1,23 @@
+{
+	"name": "@openvidu/call-common-types",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/index.ts",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"./dist/**.d.ts",
+		"./package.json",
+		"./package-lock.json"
+	],
+	"scripts": {
+		"build": "tsc",
+		"sync": "npm run build && npm pack && PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --prefix ../frontend && npm install ../backend/$PACKAGE --prefix ../backend",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"typescript": "^5.6.3"
+	}
+}

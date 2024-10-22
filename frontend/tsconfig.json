@@ -23,7 +23,7 @@
 			// "@guards/*": ["src/app/guards/*"],
 			// "@pages/*": ["src/app/pages/*"],
 			"@environment/*": ["src/environments/*"],
-			"shared-call-components": ["dist/shared-call-components"]
+			"shared-call-components": ["dist/shared-call-components"],
 		},
 		"useDefineForClassFields": false
 	}
