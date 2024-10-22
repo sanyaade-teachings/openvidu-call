@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AppearancePreferences, GlobalPreferences, RoomPreferences } from '@openvidu/call-common-types';
 import { RecordingInfo } from 'openvidu-components-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -14,52 +15,56 @@ export class HttpService {
 		// this.baseHref = '/' + (!!window.location.pathname.split('/')[1] ? window.location.pathname.split('/')[1] + '/' : '');
 	}
 
-	private generateUserHeaders(): HttpHeaders {
-		const headers = new HttpHeaders({
-			'Content-Type': 'application/json'
-		});
-		//! TODO: Fix this
-		const userCredentials = undefined; //this.storageService.getParticipantCredentials();
-
-		if (userCredentials?.username && userCredentials?.password) {
-			return headers.append(
-				'Authorization',
-				`Basic ${btoa(`${userCredentials.username}:${userCredentials.password}`)}`
-			);
-		}
-
-		return headers;
-	}
-
-	private generateAdminHeaders(): HttpHeaders {
-		const headers = new HttpHeaders({
-			'Content-Type': 'application/json'
-		});
-		// TODO: Fix this
-		const adminCredentials = undefined; // this.storageService.getAdminCredentials();
-
-		if (!adminCredentials) {
-			console.error('Admin credentials not found');
-			return headers;
-		}
-
-		const { username, password } = adminCredentials;
-
-		if (username && password) {
-			return headers.set('Authorization', `Basic ${btoa(`${username}:${password}`)}`);
-		}
-
-		return headers;
-	}
-
-	saveGlobalPreferences(preferences: any): Promise<any> {
-		const headers = this.generateUserHeaders();
-		return this.postRequest(`${this.pathPrefix}/preferences`, preferences, headers);
-	}
-
-	getGlobalPreferences(): Promise<any> {
+	/**
+	 * Retrieves the global preferences.
+	 *
+	 * @returns {Promise<GlobalPreferences>} A promise that resolves to the global preferences.
+	 */
+	getGlobalPreferences(): Promise<GlobalPreferences> {
 		const headers = this.generateUserHeaders();
 		return this.getRequest(`${this.pathPrefix}/preferences`, headers);
+	}
+
+	/**
+	 * Retrieves the room preferences.
+	 *
+	 * @returns {Promise<RoomPreferences>} A promise that resolves to the room preferences.
+	 */
+	getRoomPreferences(): Promise<RoomPreferences> {
+		const headers = this.generateUserHeaders();
+		return this.getRequest(`${this.pathPrefix}/preferences/room`, headers);
+	}
+
+	/**
+	 * Retrieves the room preferences.
+	 *
+	 * @returns {Promise<AppearancePreferences>} A promise that resolves to the app appearance preferences.
+	 */
+	getAppearancePreferences(): Promise<AppearancePreferences> {
+		const headers = this.generateUserHeaders();
+		return this.getRequest(`${this.pathPrefix}/preferences/appearance`, headers);
+	}
+
+	/**
+	 * Saves the room preferences.
+	 *
+	 * @param preferences - The room preferences to be saved.
+	 * @returns A promise that resolves when the preferences have been successfully saved.
+	 */
+	saveRoomPreferences(preferences: RoomPreferences): Promise<any> {
+		const headers = this.generateUserHeaders();
+		return this.putRequest(`${this.pathPrefix}/preferences/room`, preferences, headers);
+	}
+
+	/**
+	 * Saves the app appearance preferences.
+	 *
+	 * @param preferences - The app appearance preferences to be saved.
+	 * @returns A promise that resolves when the preferences have been successfully saved.
+	 */
+	saveAppearancePreferences(preferences: AppearancePreferences): Promise<any> {
+		const headers = this.generateUserHeaders();
+		return this.putRequest(`${this.pathPrefix}/preferences/appearance`, preferences, headers);
 	}
 
 	async getConfig() {
@@ -180,5 +185,43 @@ export class HttpService {
 
 			throw error;
 		}
+	}
+
+	private generateUserHeaders(): HttpHeaders {
+		const headers = new HttpHeaders({
+			'Content-Type': 'application/json'
+		});
+		//! TODO: Fix this
+		const userCredentials = undefined; //this.storageService.getParticipantCredentials();
+
+		if (userCredentials?.username && userCredentials?.password) {
+			return headers.append(
+				'Authorization',
+				`Basic ${btoa(`${userCredentials.username}:${userCredentials.password}`)}`
+			);
+		}
+
+		return headers;
+	}
+
+	private generateAdminHeaders(): HttpHeaders {
+		const headers = new HttpHeaders({
+			'Content-Type': 'application/json'
+		});
+		// TODO: Fix this
+		const adminCredentials = undefined; // this.storageService.getAdminCredentials();
+
+		if (!adminCredentials) {
+			console.error('Admin credentials not found');
+			return headers;
+		}
+
+		const { username, password } = adminCredentials;
+
+		if (username && password) {
+			return headers.set('Authorization', `Basic ${btoa(`${username}:${password}`)}`);
+		}
+
+		return headers;
 	}
 }

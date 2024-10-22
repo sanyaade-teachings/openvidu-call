@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ConsoleNavComponent, ConsoleNavLink, HttpService } from 'shared-call-components';
+import { Component } from '@angular/core';
+import { ConsoleNavComponent, ConsoleNavLink } from 'shared-call-components';
 
 @Component({
 	selector: 'app-console',
@@ -8,24 +8,19 @@ import { ConsoleNavComponent, ConsoleNavLink, HttpService } from 'shared-call-co
 	templateUrl: './console.component.html',
 	styleUrl: './console.component.scss'
 })
-export class ConsoleComponent implements OnInit {
+export class ConsoleComponent {
 	navLinks: ConsoleNavLink[] = [
 		{ label: 'Overview', route: '/', icon: 'dashboard' },
 		{ label: 'Appearance', route: 'appearance', icon: 'palette' },
-		{ label: 'Access & Permissions', route: 'access-permissions', icon: 'lock' },
-		{ label: 'Room Config', route: 'room-config', icon: 'video_settings' },
-		{ label: 'Security (PRO)', route: 'security', icon: 'security' },
-		{ label: 'Integrations (PRO)', route: 'integrations', icon: 'integration_instructions' },
-		{ label: 'Support', route: 'support', icon: 'support' },
-		{ label: 'About', route: 'about', icon: 'info' }
+		{ label: 'Room Preferences', route: 'room-preferences', icon: 'video_settings' },
+		{ label: 'Access & Permissions', route: 'access-permissions', icon: 'lock' }
+		// { label: 'Security (PRO)', route: 'security', icon: 'security' },
+		// { label: 'Integrations (PRO)', route: 'integrations', icon: 'integration_instructions' },
+		// { label: 'Support', route: 'support', icon: 'support' },
+		// { label: 'About', route: 'about', icon: 'info' }
 	];
 
-	constructor(private httpService: HttpService) {}
-
-	async ngOnInit() {
-		const globalPreferences = await this.httpService.getGlobalPreferences();
-		console.log(globalPreferences);
-	}
+	constructor() {}
 
 	logout() {
 		console.log('logout');

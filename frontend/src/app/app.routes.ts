@@ -6,7 +6,7 @@ import { roomGuard } from '@app/guards/room.guard';
 import { embeddedGuard } from '@app/guards/embedded.guard';
 import { nonEmbeddedGuard } from '@app/guards/non-embedded.guard';
 import { AppearanceComponent } from '@app/pages/console/appearance/appearance.component';
-import { RoomConfigComponent } from '@app/pages/console/room-config/room-config.component';
+import { RoomPreferencesComponent } from '@app/pages/console/room-preferences/room-preferences.component';
 import { AccessPermissionsComponent } from '@app/pages/console/access-permissions/access-permissions.component';
 import { UnauthorizedComponent } from 'shared-call-components';
 export const routes: Routes = [
@@ -18,7 +18,7 @@ export const routes: Routes = [
 		canActivate: [nonEmbeddedGuard],
 		children: [
 			{ path: 'appearance', component: AppearanceComponent },
-			{ path: 'room-config', component: RoomConfigComponent },
+			{ path: 'room-preferences', component: RoomPreferencesComponent },
 			{ path: 'access-permissions', component: AccessPermissionsComponent },
 		]
 	},

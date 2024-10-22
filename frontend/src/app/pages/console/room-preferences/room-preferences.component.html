@@ -33,4 +33,15 @@
 		(onToggleValueChanged)="onChatToggle($event)"
 	>
 	</ov-toggle-card>
+
+	<ov-toggle-card
+		[title]="'Backgrounds'"
+		[description]="'Allow participants to change their backgrounds'"
+		[icon]="'blur_on'"
+		[iconBackgroundColor]="'#444444'"
+		[cardBackgroundColor]="'#ffffff'"
+		[toggleValue]="backgroundsEnabled"
+		(onToggleValueChanged)="onVirtualBackgroundToggle($event)"
+	>
+	</ov-toggle-card>
 </ov-dynamic-grid>

@@ -12,6 +12,13 @@ import {
 } from 'openvidu-components-angular';
 
 import { ContextService, HttpService } from 'shared-call-components';
+import {
+	BroadcastingPreferences,
+	ChatPreferences,
+	RecordingPreferences,
+	RoomPreferences,
+	VirtualBackgroundPreferences
+} from '@openvidu/call-common-types';
 
 @Component({
 	selector: 'app-video-room',
@@ -27,6 +34,13 @@ export class VideoRoomComponent implements OnInit {
 	serverError = '';
 	loading = true;
 
+	private roomPreferences: RoomPreferences;
+	chatPreferences: ChatPreferences;
+	recordingPreferences: RecordingPreferences;
+	broadcastingPreferences: BroadcastingPreferences;
+	virtualBackgroundPreferences: VirtualBackgroundPreferences;
+	showActivityPanel = true;
+
 	constructor(
 		private httpService: HttpService,
 		private router: Router,
@@ -35,6 +49,16 @@ export class VideoRoomComponent implements OnInit {
 	) {}
 
 	async ngOnInit() {
+		const { chatPreferences, recordingPreferences, broadcastingPreferences, virtualBackgroundPreferences } =
+			await this.httpService.getRoomPreferences();
+
+		this.chatPreferences = chatPreferences;
+		this.recordingPreferences = recordingPreferences;
+		this.broadcastingPreferences = broadcastingPreferences;
+		this.virtualBackgroundPreferences = virtualBackgroundPreferences;
+
+		this.showActivityPanel = recordingPreferences.enabled || broadcastingPreferences.enabled;
+
 		if (this.contextService.isEmbeddedMode()) {
 			this.roomName = this.contextService.getRoomName();
 			// this.token = this.contextService.getToken();

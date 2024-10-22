@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="card-footer">
-		<span>{{ title }} is {{ toggleValue ? 'active' : 'disabled' }}</span>
-		<mat-slide-toggle [checked]="toggleValue" (change)="onToggleChange($event)"></mat-slide-toggle>
+		<span>{{ title }} is {{ toggleValue ? 'enabled' : 'disabled' }}</span>
+		<mat-slide-toggle class="ov-slide-toggle" [checked]="toggleValue" (change)="onToggleChange($event)"></mat-slide-toggle>
 	</div>
 </mat-card>
