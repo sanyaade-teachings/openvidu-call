@@ -5,4 +5,3 @@ export * from './src/models/index.js';
 export * from './src/helpers/index.js';
 export * from './src/server.js';
 export * from './src/config/index.js';
-export * from './src/utils/path-utils.js';

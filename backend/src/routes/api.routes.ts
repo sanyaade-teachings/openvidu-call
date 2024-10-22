@@ -4,9 +4,11 @@ import * as roomCtrl from '../controllers/room.controller.js';
 import * as recordingCtrl from '../controllers/recording.controller.js';
 import * as broadcastCtrl from '../controllers/broadcasting.controller.js';
 import * as authCtrl from '../controllers/auth.controller.js';
-import { getConfig, getGlobalPreferences, savePreferences } from '../controllers/global-preferences.controller.js';
+import { getConfig, getGlobalPreferences } from '../controllers/global-preferences/global-preferences.controller.js';
 import { healthCheck } from '../controllers/healthcheck.controller.js';
 import { withAdminAndUserBasicAuth, withAdminBasicAuth, withUserBasicAuth } from '../services/auth.service.js';
+import { getRoomPreferences, updateRoomPreferences } from '../controllers/global-preferences/room-preferences.controller.js';
+import { getAppearancePreferences, updateAppearancePreferences } from '../controllers/global-preferences/appearance-preferences.controller.js';
 
 const apiRouter = Router();
 
@@ -36,8 +38,14 @@ apiRouter.post('/admin/login', authCtrl.adminLogin);
 apiRouter.post('/admin/logout', authCtrl.adminLogout);
 
 // Global Preferences Routes
-apiRouter.post('/preferences', /*withAdminBasicAuth,*/ savePreferences);
 apiRouter.get('/preferences', /*withAdminBasicAuth,*/ getGlobalPreferences);
+
+apiRouter.put('/preferences/room', /*withAdminBasicAuth,*/ updateRoomPreferences);
+apiRouter.get('/preferences/room', /*withAdminBasicAuth,*/ getRoomPreferences);
+
+apiRouter.put('/preferences/appearance', /*withAdminAndUserBasicAuth*/ updateAppearancePreferences);
+apiRouter.get('/preferences/appearance', /*withAdminAndUserBasicAuth*/ getAppearancePreferences);
+
 apiRouter.get('/config', getConfig); // TODO: remove this route
 
 // Health Check Route
