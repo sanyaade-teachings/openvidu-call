@@ -10,6 +10,14 @@ import { RoomPreferencesComponent } from '@app/pages/console/room-preferences/ro
 import { AccessPermissionsComponent } from '@app/pages/console/access-permissions/access-permissions.component';
 import { UnauthorizedComponent } from 'shared-call-components';
 export const routes: Routes = [
+	// Embedded mode
+	{
+		path: 'embedded',
+		component: VideoRoomComponent,
+		canActivate: [embeddedGuard]
+	},
+	{ path: 'embedded/unauthorized', component: UnauthorizedComponent },
+
 	{ path: '', redirectTo: 'console', pathMatch: 'full' },
 	{ path: 'home', component: HomeComponent, canActivate: [nonEmbeddedGuard] },
 	{
@@ -19,12 +27,9 @@ export const routes: Routes = [
 		children: [
 			{ path: 'appearance', component: AppearanceComponent },
 			{ path: 'room-preferences', component: RoomPreferencesComponent },
-			{ path: 'access-permissions', component: AccessPermissionsComponent },
+			{ path: 'access-permissions', component: AccessPermissionsComponent }
 		]
 	},
-	{ path: 'unauthorized', component: UnauthorizedComponent },
 	{ path: ':roomName', component: VideoRoomComponent, canActivate: [roomGuard] },
-	// Embedded mode
-	{ path: 'embedded', component: VideoRoomComponent, canActivate: [embeddedGuard] },
-	{ path: 'embedded/unauthorized', component: UnauthorizedComponent }
+	{ path: 'unauthorized', component: UnauthorizedComponent }
 ];

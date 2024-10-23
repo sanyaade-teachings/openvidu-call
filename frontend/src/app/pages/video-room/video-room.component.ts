@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -29,63 +29,90 @@ import {
 })
 export class VideoRoomComponent implements OnInit {
 	roomName = '';
-	token: string;
+	token = '';
 	isSessionAlive = false;
 	serverError = '';
 	loading = true;
 
-	private roomPreferences: RoomPreferences;
-	chatPreferences: ChatPreferences;
-	recordingPreferences: RecordingPreferences;
-	broadcastingPreferences: BroadcastingPreferences;
-	virtualBackgroundPreferences: VirtualBackgroundPreferences;
+	private roomPreferences!: RoomPreferences;
+	chatPreferences: ChatPreferences = { enabled: true };
+	recordingPreferences: RecordingPreferences = { enabled: true };
+	broadcastingPreferences: BroadcastingPreferences = { enabled: true };
+	virtualBackgroundPreferences: VirtualBackgroundPreferences = { enabled: true };
 	showActivityPanel = true;
+	showPrejoin = true;
+	showChat = true;
+	showRecording = true;
 
 	constructor(
 		private httpService: HttpService,
 		private router: Router,
 		private route: ActivatedRoute,
-		private contextService: ContextService
+		private contextService: ContextService,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	async ngOnInit() {
-		const { chatPreferences, recordingPreferences, broadcastingPreferences, virtualBackgroundPreferences } =
-			await this.httpService.getRoomPreferences();
+		try {
+			const { chatPreferences, recordingPreferences, broadcastingPreferences, virtualBackgroundPreferences } =
+				await this.httpService.getRoomPreferences();
 
-		this.chatPreferences = chatPreferences;
-		this.recordingPreferences = recordingPreferences;
-		this.broadcastingPreferences = broadcastingPreferences;
-		this.virtualBackgroundPreferences = virtualBackgroundPreferences;
+			this.chatPreferences = chatPreferences;
+			this.recordingPreferences = recordingPreferences;
+			this.broadcastingPreferences = broadcastingPreferences;
+			this.virtualBackgroundPreferences = virtualBackgroundPreferences;
 
-		this.showActivityPanel = recordingPreferences.enabled || broadcastingPreferences.enabled;
+			this.showChat = chatPreferences.enabled;
+			this.showRecording = recordingPreferences.enabled;
+			this.showActivityPanel = recordingPreferences.enabled || broadcastingPreferences.enabled;
 
-		if (this.contextService.isEmbeddedMode()) {
-			this.roomName = this.contextService.getRoomName();
-			// this.token = this.contextService.getToken();
-			// this.isSessionAlive = true;
-			// this.loading = false;
-			return;
+			if (this.contextService.isEmbeddedMode()) {
+				// If global preferences are available, check if participant has permissions
+
+				if (this.showChat) this.showChat = this.contextService.canChat();
+
+				if (this.showRecording) this.showRecording = this.contextService.canRecord();
+
+				this.showPrejoin = false;
+				this.roomName = this.contextService.getRoomName();
+				// this.isSessionAlive = true;
+				// this.loading = false;
+				return;
+			} else {
+				this.route.params.subscribe((params: Params) => {
+					this.roomName = params['roomName'];
+				});
+			}
+		} catch (error) {
+			console.error('Error fetching room preferences', error);
 		}
-
-		this.route.params.subscribe((params: Params) => {
-			this.roomName = params.roomName;
-		});
 	}
 
 	async onTokenRequested(participantName: string) {
-		// TODO: Refactor this method. This sould not run in the embedded mode
-		try {
-			const { token } = await this.httpService.getToken(this.roomName, participantName);
-			this.token = token;
-		} catch (error) {
-			console.error(error);
-			this.serverError = error.error;
-		} finally {
+		if (this.contextService.isEmbeddedMode()) {
+			this.token = this.contextService.getToken();
 			this.loading = false;
+			this.cdr.detectChanges();
+		} else {
+			// Standard mode
+			try {
+				const { token } = await this.httpService.getToken(this.roomName, participantName);
+				this.token = token;
+			} catch (error: any) {
+				console.error(error);
+				this.serverError = error.error;
+			} finally {
+				this.loading = false;
+			}
 		}
 	}
 
 	onRoomDisconnected() {
+		if (this.contextService.isEmbeddedMode()) {
+			console.error('Embedded mode is not implemented');
+			return;
+		}
+
 		this.isSessionAlive = false;
 		console.log('onLeaveButtonClicked');
 		this.router.navigate([`/`]);

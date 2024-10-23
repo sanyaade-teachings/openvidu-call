@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 // This service is used to store the global preferences of the application
 export class GlobalPreferencesService {
 	// private globalPreferences: GlobalPreferences
-	private roomPreferences: RoomPreferences;
+	private roomPreferences!: RoomPreferences;
 
 	// private roomPreferencesSubject = new Subject<RoomPreferences>();
 

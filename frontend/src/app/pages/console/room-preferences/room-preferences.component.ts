@@ -15,7 +15,7 @@ import {
 	styleUrl: './room-preferences.component.scss'
 })
 export class RoomPreferencesComponent implements OnInit {
-	private roomPreferences: RoomPreferences;
+	private roomPreferences!: RoomPreferences;
 	recordingEnabled = false;
 	broadcastingEnabled = false;
 	chatEnabled = false;

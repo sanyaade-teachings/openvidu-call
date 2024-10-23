@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 
 export const nonEmbeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
 	const router = inject(Router);
-
 	const isRequestFromIframe = window.self !== window.top;
 
 	if (isRequestFromIframe) {

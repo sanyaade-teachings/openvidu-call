@@ -29,5 +29,6 @@ export const roomGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
 	// 	return false;
 	// }
 
+	console.log('ROOM GUARD');
 	return true;
 };

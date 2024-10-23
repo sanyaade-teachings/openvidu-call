@@ -140,7 +140,7 @@ export class HttpService {
 	private postRequest(path: string, body: any, headers?: HttpHeaders): Promise<any> {
 		try {
 			return lastValueFrom(this.http.post<any>(path, body, { headers }));
-		} catch (error) {
+		} catch (error: any) {
 			if (error.status === 404) {
 				throw { status: error.status, message: 'Cannot connect with backend. ' + error.url + ' not found' };
 			}
@@ -152,7 +152,7 @@ export class HttpService {
 	private getRequest(path: string, headers?: HttpHeaders): any {
 		try {
 			return lastValueFrom(this.http.get(path, { headers }));
-		} catch (error) {
+		} catch (error: any) {
 			if (error.status === 404) {
 				throw { status: error.status, message: 'Cannot connect with backend. ' + error.url + ' not found' };
 			}
@@ -164,7 +164,7 @@ export class HttpService {
 	private deleteRequest(path: string, headers?: HttpHeaders) {
 		try {
 			return lastValueFrom(this.http.delete<any>(path, { headers }));
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error);
 
 			if (error.status === 404) {
@@ -178,7 +178,7 @@ export class HttpService {
 	private putRequest(path: string, body: any = {}, headers?: HttpHeaders) {
 		try {
 			return lastValueFrom(this.http.put<any>(path, body, { headers }));
-		} catch (error) {
+		} catch (error: any) {
 			if (error.status === 404) {
 				throw { status: error.status, message: 'Cannot connect with backend. ' + error.url + ' not found' };
 			}
@@ -192,14 +192,14 @@ export class HttpService {
 			'Content-Type': 'application/json'
 		});
 		//! TODO: Fix this
-		const userCredentials = undefined; //this.storageService.getParticipantCredentials();
+		// const userCredentials = this.storageService.getParticipantCredentials();
 
-		if (userCredentials?.username && userCredentials?.password) {
-			return headers.append(
-				'Authorization',
-				`Basic ${btoa(`${userCredentials.username}:${userCredentials.password}`)}`
-			);
-		}
+		// if (userCredentials?.username && userCredentials?.password) {
+		// 	return headers.append(
+		// 		'Authorization',
+		// 		`Basic ${btoa(`${userCredentials.username}:${userCredentials.password}`)}`
+		// 	);
+		// }
 
 		return headers;
 	}

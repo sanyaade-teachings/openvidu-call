@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { ContextService } from '@lib/services/context.service';
+import { ContextService } from 'shared-call-components';
 
 export const embeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
 	const contextService = inject(ContextService);
@@ -30,7 +30,6 @@ export const embeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot
 			return false;
 		}
 
-		// Redirect to the room page if the token is provided
 		contextService.setToken(token);
 	}
 

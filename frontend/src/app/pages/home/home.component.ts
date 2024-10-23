@@ -34,14 +34,14 @@ import { animals, colors, Config, countries, names, uniqueNamesGenerator } from 
 export class HomeComponent implements OnInit, OnDestroy {
 	roomForm: FormGroup;
 	loginForm: FormGroup;
-	version: string;
-	isPrivateAccess: boolean;
-	username: string;
-	loginError: boolean;
-	serverConnectionError: boolean;
+	version = '';
+	isPrivateAccess = false;
+	username = '';
+	loginError = false;
+	serverConnectionError = false;
 	isUserLogged = false;
 	loading = true;
-	private queryParamSubscription: Subscription;
+	private queryParamSubscription!: Subscription;
 
 	constructor(
 		private router: Router,
@@ -53,7 +53,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute
 	) {
 		this.loginForm = this.fb.group({
-			username: [/*this.storageService.getParticipantName() ??*/ '', [Validators.required, Validators.minLength(4)]],
+			username: [
+				/*this.storageService.getParticipantName() ??*/ '',
+				[Validators.required, Validators.minLength(4)]
+			],
 			password: ['', [Validators.required, Validators.minLength(4)]]
 		});
 
@@ -94,16 +97,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 		if (this.queryParamSubscription) this.queryParamSubscription.unsubscribe();
 	}
 
-	generateRoomName(event) {
+	generateRoomName(event: any) {
 		event.preventDefault();
-		this.roomForm.get('roomName').setValue(this.getRandomName());
+		this.roomForm.get('roomName')?.setValue(this.getRandomName());
 	}
 
 	clearRoomName() {
-		this.roomForm.get('roomName').setValue('');
+		this.roomForm.get('roomName')?.setValue('');
 	}
 
-	keyDown(event) {
+	keyDown(event: KeyboardEvent) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
 			this.goToVideoCall();
@@ -113,8 +116,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 	async login() {
 		// Invoked when login form is valid
 		this.loginError = false;
-		this.username = this.loginForm.get('username').value;
-		const password = this.loginForm.get('password').value;
+		this.username = this.loginForm.get('username')?.value;
+		const password = this.loginForm.get('password')?.value;
 
 		try {
 			await this.httpService.userLogin({ username: this.username, password });
@@ -148,18 +151,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 	private subscribeToQueryParams(): void {
 		this.queryParamSubscription = this.route.queryParams.subscribe((params) => {
-			const roomName = params?.roomName;
+			const roomName = params['roomName'];
 
 			if (roomName) {
 				this.loginError = true;
-				this.roomForm.get('roomName').setValue(roomName.replace(/[^\w-]/g, ''));
+				this.roomForm.get('roomName')?.setValue(roomName.replace(/[^\w-]/g, ''));
 			}
 		});
 	}
 
 	private navigateToVideoconference() {
-		const roomName = this.roomForm.get('roomName').value.replace(/ /g, '-');
-		this.roomForm.get('roomName').setValue(roomName);
+		const roomName = this.roomForm.get('roomName')?.value.replace(/ /g, '-');
+		this.roomForm.get('roomName')?.setValue(roomName);
 		this.router.navigate(['/', roomName]);
 	}
 
