@@ -14,6 +14,7 @@ import {
 import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL, LIVEKIT_URL_PRIVATE } from '../config.js';
 import { LoggerService } from './logger.service.js';
 import { errorLivekitIsNotAvailable, errorParticipantAlreadyExists, internalError } from '../models/error.model.js';
+import { TokenOptions } from '@openvidu/call-common-types';
 
 export class LiveKitService {
 	protected static instance: LiveKitService;
@@ -35,7 +36,9 @@ export class LiveKitService {
 		return LiveKitService.instance;
 	}
 
-	async generateToken(roomName: string, participantName: string): Promise<string> {
+	async generateToken(options: TokenOptions): Promise<string> {
+		const { roomName, participantName } = options;
+
 		try {
 			if (await this.participantAlreadyExists(roomName, participantName)) {
 				this.logger.error(`Participant ${participantName} already exists in room ${roomName}`);
@@ -53,7 +56,7 @@ export class LiveKitService {
 			name: participantName,
 			metadata: JSON.stringify({
 				livekitUrl: LIVEKIT_URL,
-				roomAdmin: true
+				permissions: options.permissions
 			})
 		});
 		const permissions: VideoGrant = {
@@ -63,7 +66,7 @@ export class LiveKitService {
 			roomList: true,
 			roomRecord: true,
 			roomAdmin: true,
-			ingressAdmin: true,
+			ingressAdmin: false,
 			canPublish: true,
 			canSubscribe: true,
 			canPublishData: true,
