@@ -2,18 +2,22 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"baseUrl": "./",
-		"module": "esnext",
-		"outDir": "./dist/out-tsc",
-		"sourceMap": true,
-		"esModuleInterop": true,
-		"declaration": false,
 		"moduleResolution": "node",
 		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
 		"resolveJsonModule": true,
-		"target": "ES2022",
 		"typeRoots": ["node_modules/@types"],
-		"lib": ["es2017", "dom"],
+		"outDir": "./dist/out-tsc",
+		"strict": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"sourceMap": true,
+		"declaration": false,
+		"experimentalDecorators": true,
 		"paths": {
 			"core-js/es7/reflect": ["./node_modules/core-js/proposals/reflect-metadata"],
 			"@app/*": ["src/app/*"],
@@ -23,8 +27,17 @@
 			// "@guards/*": ["src/app/guards/*"],
 			// "@pages/*": ["src/app/pages/*"],
 			"@environment/*": ["src/environments/*"],
-			"shared-call-components": ["dist/shared-call-components"],
+			"shared-call-components": ["dist/shared-call-components"]
 		},
-		"useDefineForClassFields": false
+		"importHelpers": true,
+		"target": "ES2022",
+		"module": "ES2022",
+		"lib": ["ES2022", "dom"]
+	},
+	"angularCompilerOptions": {
+		"enableI18nLegacyMessageIdFormat": false,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+		"strictTemplates": true
 	}
 }

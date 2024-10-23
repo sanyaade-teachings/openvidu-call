@@ -18,24 +18,22 @@
 					"builder": "@angular-devkit/build-angular:application",
 					"options": {
 						"aot": true,
-						"outputPath": {
-							"base": "dist/openvidu-call"
-						},
+						"outputPath": "dist/openvidu-call",
 						"index": "src/index.html",
+						"browser": "src/main.ts",
 						"polyfills": ["zone.js"],
 						"tsConfig": "src/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
 						"assets": ["src/favicon.ico", "src/assets"],
 						"styles": ["src/styles.scss"],
-						"scripts": [],
-						"browser": "src/main.ts"
+						"scripts": []
 					},
 					"configurations": {
 						"development": {
 							"optimization": false,
 							"outputHashing": "all",
 							"sourceMap": true,
-							"namedChunks": false,
-							"extractLicenses": true
+							"extractLicenses": false
 						},
 						"production": {
 							"budgets": [
@@ -98,7 +96,8 @@
 						"production": {
 							"buildTarget": "openvidu-call:build:production"
 						}
-					}
+					},
+					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
@@ -170,8 +169,5 @@
 				}
 			}
 		}
-	},
-	"cli": {
-		"analytics": false
 	}
 }
