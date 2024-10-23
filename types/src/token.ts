@@ -1,7 +1,15 @@
+// export interface OpenViduDecodedToken {
+// 	metadata: string;
+// 	video: VideoGrant;
+// }
+
 export interface TokenOptions {
 	roomName: string;
 	participantName: string;
-	canRecord?: boolean;
-	canChat?: boolean;
-	canAccess?: boolean;
+	permissions?: OpenViduPermissions;
+}
+
+export interface OpenViduPermissions {
+	canRecord: boolean;
+	canChat: boolean;
 }
