@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import { swaggerUi, swaggerDocs } from '../config/swagger.js';
-import { generateToken } from '../controllers/token.controller.js';
+import { generateToken } from '../controllers/embedded.controller.js';
 
 const embeddedRouter = Router();
 

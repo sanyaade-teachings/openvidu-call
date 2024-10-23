@@ -3,30 +3,32 @@ import { LiveKitService } from '../services/livekit.service.js';
 import { LoggerService } from '../services/logger.service.js';
 import { OpenViduCallError } from '../models/error.model.js';
 import { RoomService } from '../services/room.service.js';
+import { TokenOptions } from '@openvidu/call-common-types';
 
 const livekitService = LiveKitService.getInstance();
 const roomService = RoomService.getInstance();
 const logger = LoggerService.getInstance();
 
 export const createRoom = async (req: Request, res: Response) => {
-	const { participantName, roomName } = req.body;
-
-	if (!roomName) {
-		return res.status(400).json({ name: 'Room Error', message: 'Room name is required for this operation' });
-	}
-
-	if (!participantName) {
-		return res.status(400).json({
-			name: 'Room Error',
-			message: 'Participant name is required for this operation'
-		});
-	}
-
-	logger.verbose(`Creating room '${roomName}' with participant '${participantName}'`);
+	const tokenOptions: TokenOptions = req.body;
+	const { participantName, roomName } = tokenOptions;
 
 	try {
+		if (!roomName) {
+			return res.status(400).json({ name: 'Room Error', message: 'Room name is required for this operation' });
+		}
+
+		if (!participantName) {
+			return res.status(400).json({
+				name: 'Room Error',
+				message: 'Participant name is required for this operation'
+			});
+		}
+
+		logger.verbose(`Creating room '${roomName}' with participant '${participantName}'`);
+
 		const [token] = await Promise.all([
-			livekitService.generateToken(roomName, participantName),
+			livekitService.generateToken(tokenOptions),
 			roomService.createRoom(roomName)
 		]);
 		return res.status(200).json({ token });
