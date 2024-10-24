@@ -1,6 +1,5 @@
 // src/controllers/roomPreferences.controller.ts
 import { Request, Response } from 'express';
-import { RoomPreferencesModel } from '../../models/global-preferences/room-preference.model.js';
 import { LoggerService } from '../../services/logger.service.js';
 import { GlobalPreferencseService } from '../../services/global-preferences.service.js';
 import { OpenViduCallError } from '../../models/error.model.js';
@@ -21,20 +20,7 @@ export const updateRoomPreferences = async (req: Request, res: Response) => {
 			.status(200)
 			.json({ message: 'Room preferences updated successfully.', preferences: savedPreferences });
 
-		// let preferences = await RoomPreferencesModel.findOne();
 
-		// if (preferences) {
-		// 	await RoomPreferencesModel.update({ chatPreferences }, { where: { id: preferences.id } });
-		// 	return res.status(200).json({ message: 'Room preferences updated successfully.', preferences });
-		// } else {
-		// 	// Crear preferencias si no existen
-		// 	preferences = await RoomPreferencesModel.create({
-		// 		recordingPreferences,
-		// 		broadcastingPreferences,
-		// 		chatPreferences
-		// 	});
-		// 	return res.status(201).json({ message: 'Room preferences created successfully.', preferences });
-		// }
 	} catch (error) {
 		if (error instanceof OpenViduCallError) {
 			logger.error(`Error saving room preferences: ${error.message}`);
@@ -54,7 +40,7 @@ export const getRoomPreferences = async (req: Request, res: Response) => {
 			return res.status(404).json({ message: 'Room preferences not found' });
 		}
 
-		return res.status(200).json(preferences);
+		return res.status(200).json(preferences.value);
 	} catch (error) {
 		console.error('Error fetching room preferences:', error);
 		return res.status(500).json({ message: 'Error fetching room preferences', error });

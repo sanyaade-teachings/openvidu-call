@@ -4,11 +4,17 @@ import * as roomCtrl from '../controllers/room.controller.js';
 import * as recordingCtrl from '../controllers/recording.controller.js';
 import * as broadcastCtrl from '../controllers/broadcasting.controller.js';
 import * as authCtrl from '../controllers/auth.controller.js';
-import { getConfig, getGlobalPreferences } from '../controllers/global-preferences/global-preferences.controller.js';
+import { getConfig } from '../controllers/global-preferences/global-preferences.controller.js';
 import { healthCheck } from '../controllers/healthcheck.controller.js';
 import { withAdminAndUserBasicAuth, withAdminBasicAuth, withUserBasicAuth } from '../services/auth.service.js';
-import { getRoomPreferences, updateRoomPreferences } from '../controllers/global-preferences/room-preferences.controller.js';
-import { getAppearancePreferences, updateAppearancePreferences } from '../controllers/global-preferences/appearance-preferences.controller.js';
+import {
+	getRoomPreferences,
+	updateRoomPreferences
+} from '../controllers/global-preferences/room-preferences.controller.js';
+import {
+	getAppearancePreferences,
+	updateAppearancePreferences
+} from '../controllers/global-preferences/appearance-preferences.controller.js';
 
 const apiRouter = Router();
 
@@ -38,7 +44,7 @@ apiRouter.post('/admin/login', authCtrl.adminLogin);
 apiRouter.post('/admin/logout', authCtrl.adminLogout);
 
 // Global Preferences Routes
-apiRouter.get('/preferences', /*withAdminBasicAuth,*/ getGlobalPreferences);
+// apiRouter.get('/preferences', /*withAdminBasicAuth,*/ getGlobalPreferences);
 
 apiRouter.put('/preferences/room', /*withAdminBasicAuth,*/ updateRoomPreferences);
 apiRouter.get('/preferences/room', /*withAdminBasicAuth,*/ getRoomPreferences);
