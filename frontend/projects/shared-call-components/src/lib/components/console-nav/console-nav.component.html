@@ -1,21 +1,16 @@
 <mat-toolbar color="primary">
-	<!-- Botón de menú (Izquierda) -->
 	<button mat-icon-button aria-label="Menu icon" (click)="toggleSideMenu()">
 		<mat-icon>menu</mat-icon>
 	</button>
 
-	<!-- Título centrado -->
 	<span class="toolbar-title">OpenVidu Console</span>
 
-	<!-- Espaciador para separar el título de los botones de la derecha -->
 	<span class="toolbar-spacer"></span>
 
-	<!-- Botón de perfil (Derecha) -->
 	<button mat-icon-button aria-label="Profile">
 		<mat-icon>account_circle</mat-icon>
 	</button>
 
-	<!-- Botón de logout (Derecha) -->
 	<button mat-icon-button (click)="onLogoutClicked.emit()" aria-label="Logout">
 		<mat-icon>logout</mat-icon>
 	</button>
@@ -44,17 +39,13 @@
 					</span>
 				</a>
 			</ng-container>
-
-			<!-- Añade enlaces dinamicamente aqui -->
 		</mat-nav-list>
 	</mat-sidenav>
 
-	<!-- Contenido principal -->
+	<!-- Main content -->
 	<mat-sidenav-content>
-		<!-- Contenido de la página -->
 		<div class="page-content">
-			<!-- Aquí va el contenido de cada página -->
-			<router-outlet></router-outlet> <!-- Aquí se mostrará el contenido basado en la ruta -->
+			<router-outlet></router-outlet>
 		</div>
 	</mat-sidenav-content>
 </mat-sidenav-container>

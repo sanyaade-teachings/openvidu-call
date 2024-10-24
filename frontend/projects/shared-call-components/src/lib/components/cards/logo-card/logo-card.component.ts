@@ -13,13 +13,12 @@ import { MatIconModule } from '@angular/material/icon';
 export class LogoCardComponent {
 	@Input() title: string = '';
 	@Input() description: string = '';
-	@Input() logoSrc: string = ''; // URL de la imagen del logo
+	@Input() logoSrc: string = '';
 	@Input() cardBackgroundColor: string = '#ffffff';
 	@Input() isEnabled: boolean = true;
 
-	isHovering: boolean = false; // Estado para controlar el hover
+	isHovering: boolean = false;
 
-	// Métodos para manejar el mouseenter y mouseleave
 	onMouseEnter() {
 		if (this.isEnabled) {
 			this.isHovering = true;

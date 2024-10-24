@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DynamicGridComponent, LogoCardComponent } from 'shared-call-components';
+import { DynamicGridComponent, LogoCardComponent } from '../../..//components';
 
 @Component({
 	selector: 'ov-appearance',

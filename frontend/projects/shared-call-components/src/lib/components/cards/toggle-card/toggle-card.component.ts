@@ -27,7 +27,7 @@ export class ToggleCardComponent {
 	 * @type {string}
 	 * @default 'settings'
 	 */
-	@Input() icon: string = 'settings'; // Nombre del ícono (por defecto "settings")
+	@Input() icon: string = 'settings';
 	/**
 	 * The background color of the icon.
 	 *

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ConsoleNavComponent, ConsoleNavLink } from 'shared-call-components';
+import { ConsoleNavComponent } from '../../components/console-nav/console-nav.component';
+import { ConsoleNavLink } from '../../models/sidenav.model';
 
 @Component({
 	selector: 'app-console',
@@ -10,14 +11,12 @@ import { ConsoleNavComponent, ConsoleNavLink } from 'shared-call-components';
 })
 export class ConsoleComponent {
 	navLinks: ConsoleNavLink[] = [
-		{ label: 'Overview', route: '/', icon: 'dashboard' },
+		{ label: 'Overview', route: 'overview', icon: 'dashboard' },
+		{ label: 'Access & Permissions', route: 'access-permissions', icon: 'lock' },
 		{ label: 'Appearance', route: 'appearance', icon: 'palette' },
 		{ label: 'Room Preferences', route: 'room-preferences', icon: 'video_settings' },
-		{ label: 'Access & Permissions', route: 'access-permissions', icon: 'lock' }
-		// { label: 'Security (PRO)', route: 'security', icon: 'security' },
-		// { label: 'Integrations (PRO)', route: 'integrations', icon: 'integration_instructions' },
-		// { label: 'Support', route: 'support', icon: 'support' },
-		// { label: 'About', route: 'about', icon: 'info' }
+		{ label: 'Security', route: 'security-preferences', icon: 'security' },
+		{ label: 'About', route: 'about', icon: 'info' }
 	];
 
 	constructor() {}
