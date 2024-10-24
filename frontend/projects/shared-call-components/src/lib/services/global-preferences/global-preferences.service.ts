@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from 'openvidu-components-angular';
-import { HttpService } from './http.service';
+import { HttpService } from '../http/http.service';
 
 @Injectable({
 	providedIn: 'root'
