@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomPreferences } from '@openvidu/call-common-types';
-import { DynamicGridComponent, GlobalPreferencesService, ToggleCardComponent } from 'shared-call-components';
+import {
+	DynamicGridComponent,
+	GlobalPreferencesService,
+	NotificationService,
+	ToggleCardComponent
+} from 'shared-call-components';
 
 @Component({
 	selector: 'ov-room-preferences',
@@ -16,7 +21,10 @@ export class RoomPreferencesComponent implements OnInit {
 	chatEnabled = false;
 	backgroundsEnabled = false;
 
-	constructor(private globalPreferencesService: GlobalPreferencesService) {}
+	constructor(
+		private globalPreferencesService: GlobalPreferencesService,
+		private notificationService: NotificationService
+	) {}
 
 	async ngOnInit() {
 		try {
