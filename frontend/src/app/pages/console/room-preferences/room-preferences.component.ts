@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomPreferences } from '@openvidu/call-common-types';
-import {
-	DynamicGridComponent,
-	GlobalPreferencesService,
-	HttpService,
-	ToggleCardComponent
-} from 'shared-call-components';
+import { DynamicGridComponent, GlobalPreferencesService, ToggleCardComponent } from 'shared-call-components';
 
 @Component({
 	selector: 'ov-room-preferences',
@@ -21,24 +16,14 @@ export class RoomPreferencesComponent implements OnInit {
 	chatEnabled = false;
 	backgroundsEnabled = false;
 
-	constructor(
-		private httpService: HttpService,
-		private globalPreferencesService: GlobalPreferencesService
-	) {}
+	constructor(private globalPreferencesService: GlobalPreferencesService) {}
 
 	async ngOnInit() {
 		try {
-			this.roomPreferences = this.globalPreferencesService.getRoomPreferences();
-
-			if (!this.roomPreferences) {
-				console.log('Room preferences not found, fetching from server');
-				this.roomPreferences = await this.httpService.getRoomPreferences();
-			}
+			this.roomPreferences = await this.globalPreferencesService.getRoomPreferences();
 
 			console.log('Room preferences', this.roomPreferences);
 
-			// Cache the room preferences in the global preferences service
-			this.globalPreferencesService.setRoomPreferences(this.roomPreferences);
 			const { recordingPreferences, broadcastingPreferences, chatPreferences, virtualBackgroundPreferences } =
 				this.roomPreferences;
 			this.recordingEnabled = recordingPreferences.enabled;
@@ -50,63 +35,60 @@ export class RoomPreferencesComponent implements OnInit {
 		}
 	}
 
-	async onRecordingToggle(checked: boolean) {
-		this.recordingEnabled = checked;
-		console.log('Recording toggled', this.recordingEnabled);
+	async onRecordingToggle(enabled: boolean) {
+		console.log('Recording toggled', enabled);
 
 		try {
-			this.roomPreferences.recordingPreferences.enabled = this.recordingEnabled;
-			await this.httpService.saveRoomPreferences(this.roomPreferences);
+			this.roomPreferences.recordingPreferences.enabled = enabled;
+			await this.globalPreferencesService.saveRoomPreferences(this.roomPreferences);
+			this.recordingEnabled = enabled;
+
 			// TODO: Show a toast message
 		} catch (error) {
 			console.error('Error saving recording preferences', error);
 			// TODO: Show a toast message
-			this.recordingEnabled = !this.recordingEnabled;
 		}
 	}
 
-	async onBroadcastingToggle(checked: boolean) {
-		this.broadcastingEnabled = checked;
-		console.log('Broadcasting toggled', this.broadcastingEnabled);
+	async onBroadcastingToggle(enabled: boolean) {
+		console.log('Broadcasting toggled', enabled);
 
 		try {
-			this.roomPreferences.broadcastingPreferences.enabled = this.broadcastingEnabled;
-			await this.httpService.saveRoomPreferences(this.roomPreferences);
+			this.roomPreferences.broadcastingPreferences.enabled = enabled;
+			await this.globalPreferencesService.saveRoomPreferences(this.roomPreferences);
+			this.broadcastingEnabled = enabled;
 			// TODO: Show a toast message
 		} catch (error) {
 			console.error('Error saving broadcasting preferences', error);
 			// TODO: Show a toast message
-			this.broadcastingEnabled = !this.broadcastingEnabled;
 		}
 	}
 
-	async onChatToggle(checked: boolean) {
-		this.chatEnabled = checked;
-		console.log('Chat toggled', this.chatEnabled);
+	async onChatToggle(enabled: boolean) {
+		console.log('Chat toggled', enabled);
 
 		try {
-			this.roomPreferences.chatPreferences.enabled = this.chatEnabled;
-			await this.httpService.saveRoomPreferences(this.roomPreferences);
+			this.roomPreferences.chatPreferences.enabled = enabled;
+			await this.globalPreferencesService.saveRoomPreferences(this.roomPreferences);
+			this.chatEnabled = enabled;
 			// TODO: Show a toast message
 		} catch (error) {
 			console.error('Error saving chat preferences', error);
 			// TODO: Show a toast message
-			this.chatEnabled = !this.chatEnabled;
 		}
 	}
 
-	async onVirtualBackgroundToggle(checked: boolean) {
-		console.log('Virtual background toggled', checked);
-		this.backgroundsEnabled = checked;
+	async onVirtualBackgroundToggle(enabled: boolean) {
+		console.log('Virtual background toggled', enabled);
 
 		try {
+			this.roomPreferences.virtualBackgroundPreferences.enabled = enabled;
+			await this.globalPreferencesService.saveRoomPreferences(this.roomPreferences);
+			this.backgroundsEnabled = enabled;
 			// TODO: Show a toast message
-			this.roomPreferences.virtualBackgroundPreferences.enabled = checked;
-			await this.httpService.saveRoomPreferences(this.roomPreferences);
 		} catch (error) {
 			console.error('Error saving virtual background preferences', error);
 			// TODO: Show a toast message
-			this.backgroundsEnabled = !this.backgroundsEnabled;
 		}
 	}
 }
