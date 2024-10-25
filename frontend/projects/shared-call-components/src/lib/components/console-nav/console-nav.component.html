@@ -40,6 +40,13 @@
 				</a>
 			</ng-container>
 		</mat-nav-list>
+
+		@if (!isSideMenuCollapsed) {
+			<div class="separator"></div>
+			<div class="version">
+				<p>v{{ version }}</p>
+			</div>
+		}
 	</mat-sidenav>
 
 	<!-- Main content -->

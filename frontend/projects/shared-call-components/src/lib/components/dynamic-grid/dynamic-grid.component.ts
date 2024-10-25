@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 
 @Component({
@@ -9,7 +9,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 	templateUrl: './dynamic-grid.component.html',
 	styleUrl: './dynamic-grid.component.scss'
 })
-export class DynamicGridComponent {
+export class DynamicGridComponent implements OnInit {
 	@Input() maxColumns: number = 3; // Maximum number of columns
 	columns: number = 1; // Current number of columns
 	private itemsCount: number = 0;

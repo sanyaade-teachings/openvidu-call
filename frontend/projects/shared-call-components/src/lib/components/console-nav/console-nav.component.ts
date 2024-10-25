@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { ConsoleNavLink } from '../../models/sidenav.model';
 
+import packageJson from 'package.json';
 @Component({
 	selector: 'ov-console-nav',
 	standalone: true,
@@ -20,6 +21,7 @@ export class ConsoleNavComponent {
 	isMobile = false;
 	isTablet = false;
 	isSideMenuCollapsed = false;
+	version: string = packageJson.version;
 	@Input() navLinks: ConsoleNavLink[] = [];
 
 	@Output() onLogoutClicked: EventEmitter<void> = new EventEmitter<void>();

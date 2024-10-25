@@ -59,6 +59,10 @@ mat-sidenav {
 	}
 }
 
+.mat-mdc-nav-list {
+	height: calc(100% - 3.5rem - 25px);
+}
+
 // Move the content down so that it won't be hidden by the toolbar
 mat-sidenav-content {
 	padding-top: 3.5rem;
@@ -86,4 +90,15 @@ mat-sidenav-content {
 }
 .menu-hr {
 	margin: 0px !important;
+}
+.version {
+	margin-top: auto;
+	padding: 0.5rem;
+	font-size: 0.875rem;
+	color: #757575;
+	text-align: center;
+}
+.separator {
+	margin: 0px;
+	border-top: 1px solid #e0e0e0;
 }
