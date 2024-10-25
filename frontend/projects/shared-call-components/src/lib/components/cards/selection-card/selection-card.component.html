@@ -1,0 +1,14 @@
+<ov-base-card [title]="title" [description]="description" [icon]="icon">
+	<div card-content class="card-content">
+		<p>Select</p>
+		<mat-form-field card-content>
+			<mat-select [(value)]="selectedOption" (selectionChange)="onSelectionChange($event)">
+				@for (option of options; track option.value) {
+					<mat-option [value]="option.value">
+						{{ option.label }}
+					</mat-option>
+				}
+			</mat-select>
+		</mat-form-field>
+	</div>
+</ov-base-card>

@@ -1,0 +1,20 @@
+<mat-card class="base-card" [style.background-color]="cardBackgroundColor">
+	<div class="card-header">
+		<div class="icon-container" [style.background-color]="iconBackgroundColor">
+			<mat-icon class="card-icon">{{ icon }}</mat-icon>
+		</div>
+		<div class="text-container">
+			<div class="card-title">{{ title }}</div>
+			<div class="card-subtitle">{{ description }}</div>
+		</div>
+	</div>
+	@if (showCardContent) {
+		<div class="divider"></div>
+	}
+
+	<div class="card-content" #cardContent [class.hidden]="!showCardContent">
+		<ng-content select="[card-content]"></ng-content>
+	</div>
+
+	<ng-content select="[card-footer]"></ng-content>
+</mat-card>

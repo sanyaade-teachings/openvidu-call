@@ -1,0 +1,24 @@
+.mat-form-field {
+	width: 100%;
+	margin-top: 8px;
+
+	.mat-select {
+		font-size: 1rem;
+		color: #333;
+	}
+
+	.mat-select-placeholder {
+		color: #aaa;
+	}
+
+	.mat-option-text {
+		color: #333;
+	}
+}
+
+.card-content {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	// padding: 20px;
+}
