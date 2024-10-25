@@ -1,6 +1,8 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { ContextService, ApplicationMode } from 'shared-call-components';
+import { ContextService } from '../services';
+import { ApplicationMode } from '../models';
+
 
 export const embeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
 	const contextService = inject(ContextService);

@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ConfigService } from '@app/services/config.service';
+// import { ConfigService } from '@app/services/config.service';
 import { StorageAppService } from '@app/services/storage.service';
 import { HttpService } from 'shared-call-components';
 
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 		public formBuilder: UntypedFormBuilder,
 		private httpService: HttpService,
 		private storageService: StorageAppService,
-		private callService: ConfigService,
+		// private callService: ConfigService,
 		private fb: FormBuilder,
 		private route: ActivatedRoute
 	) {
@@ -70,8 +70,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 		this.subscribeToQueryParams();
 
 		try {
-			await this.callService.initialize();
-			this.isPrivateAccess = this.callService.isPrivateAccess();
+			// await this.callService.initialize();
+			// this.isPrivateAccess = this.callService.isPrivateAccess();
 
 			if (this.isPrivateAccess) {
 				const userCredentials = this.storageService.getParticipantCredentials();

@@ -1,9 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { VideoRoomComponent } from '@app/pages/video-room/video-room.component';
-import { standardGuard } from '@app/guards/standard.guard';
-import { embeddedGuard } from '@app/guards/embedded.guard';
-import { nonEmbeddedGuard } from '@app/guards/non-embedded.guard';
 
 import {
 	RoomPreferencesComponent,
@@ -13,7 +10,10 @@ import {
 	ConsoleComponent,
 	AboutComponent,
 	SecurityPreferencesComponent,
-	OverviewComponent
+	OverviewComponent,
+	embeddedGuard,
+	nonEmbeddedGuard,
+	standardGuard
 } from 'shared-call-components';
 export const routes: Routes = [
 	// Embedded mode
@@ -44,5 +44,5 @@ export const routes: Routes = [
 	{ path: 'unauthorized', component: UnauthorizedComponent },
 
 	// Redirect all other routes to home
-	{path: '**', redirectTo: 'home'}
+	{ path: '**', redirectTo: 'home' }
 ];

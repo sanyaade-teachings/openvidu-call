@@ -37,7 +37,7 @@ export class ContextService {
 	 * @param isEmbedded - A boolean indicating whether the application is in embedded mode.
 	 */
 	setApplicationMode(mode: ApplicationMode): void {
-		console.warn('SET APP MODE', mode);
+		this.log.d('Setting application mode', mode);
 		this.context.mode = mode;
 	}
 
