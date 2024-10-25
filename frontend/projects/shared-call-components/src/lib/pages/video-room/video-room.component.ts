@@ -11,13 +11,13 @@ import {
 	ApiDirectiveModule
 } from 'openvidu-components-angular';
 
-import { ContextService, GlobalPreferencesService, HttpService } from 'shared-call-components';
 import {
 	BroadcastingPreferences,
 	ChatPreferences,
 	RecordingPreferences,
 	VirtualBackgroundPreferences
 } from '@openvidu/call-common-types';
+import { HttpService, ContextService, GlobalPreferencesService } from '../../services';
 
 @Component({
 	selector: 'app-video-room',
@@ -48,11 +48,11 @@ export class VideoRoomComponent implements OnInit {
 	};
 
 	constructor(
-		private httpService: HttpService,
-		private router: Router,
-		private contextService: ContextService,
-		private globalPreferencesService: GlobalPreferencesService,
-		private cdr: ChangeDetectorRef
+		protected httpService: HttpService,
+		protected router: Router,
+		protected contextService: ContextService,
+		protected globalPreferencesService: GlobalPreferencesService,
+		protected cdr: ChangeDetectorRef
 	) {}
 
 	async ngOnInit() {

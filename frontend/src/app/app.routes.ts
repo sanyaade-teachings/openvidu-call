@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from '@app/pages/home/home.component';
-import { VideoRoomComponent } from '@app/pages/video-room/video-room.component';
 
 import {
 	RoomPreferencesComponent,
@@ -13,7 +12,8 @@ import {
 	OverviewComponent,
 	embeddedGuard,
 	nonEmbeddedGuard,
-	standardGuard
+	standardGuard,
+	VideoRoomComponent
 } from 'shared-call-components';
 export const routes: Routes = [
 	// Embedded mode
