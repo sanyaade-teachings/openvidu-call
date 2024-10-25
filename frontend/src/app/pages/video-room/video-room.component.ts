@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import {
 	BroadcastingStartRequestedEvent,
@@ -11,12 +11,11 @@ import {
 	ApiDirectiveModule
 } from 'openvidu-components-angular';
 
-import { ContextService, HttpService } from 'shared-call-components';
+import { ContextService, GlobalPreferencesService, HttpService } from 'shared-call-components';
 import {
 	BroadcastingPreferences,
 	ChatPreferences,
 	RecordingPreferences,
-	RoomPreferences,
 	VirtualBackgroundPreferences
 } from '@openvidu/call-common-types';
 
@@ -34,77 +33,63 @@ export class VideoRoomComponent implements OnInit {
 	serverError = '';
 	loading = true;
 
-	private roomPreferences!: RoomPreferences;
 	chatPreferences: ChatPreferences = { enabled: true };
 	recordingPreferences: RecordingPreferences = { enabled: true };
 	broadcastingPreferences: BroadcastingPreferences = { enabled: true };
 	virtualBackgroundPreferences: VirtualBackgroundPreferences = { enabled: true };
-	showActivityPanel = true;
-	showPrejoin = true;
-	showChat = true;
-	showRecording = true;
+
+	featureFlags = {
+		showActivityPanel: true,
+		showPrejoin: true,
+		showChat: true,
+		showRecording: true,
+		showBroadcasting: true,
+		showBackgrounds: true
+	};
 
 	constructor(
 		private httpService: HttpService,
 		private router: Router,
-		private route: ActivatedRoute,
 		private contextService: ContextService,
+		private globalPreferencesService: GlobalPreferencesService,
 		private cdr: ChangeDetectorRef
 	) {}
 
 	async ngOnInit() {
 		try {
-			const { chatPreferences, recordingPreferences, broadcastingPreferences, virtualBackgroundPreferences } =
-				await this.httpService.getRoomPreferences();
+			await this.loadRoomPreferences();
 
-			this.chatPreferences = chatPreferences;
-			this.recordingPreferences = recordingPreferences;
-			this.broadcastingPreferences = broadcastingPreferences;
-			this.virtualBackgroundPreferences = virtualBackgroundPreferences;
+			this.roomName = this.contextService.getRoomName();
 
-			this.showChat = chatPreferences.enabled;
-			this.showRecording = recordingPreferences.enabled;
-			this.showActivityPanel = recordingPreferences.enabled || broadcastingPreferences.enabled;
+			const needToConfigureFlagsFromToken =
+				this.contextService.isStandardModeWithToken() || this.contextService.isEmbeddedMode();
 
-			if (this.contextService.isEmbeddedMode()) {
-				// If global preferences are available, check if participant has permissions
-
-				if (this.showChat) this.showChat = this.contextService.canChat();
-
-				if (this.showRecording) this.showRecording = this.contextService.canRecord();
-
-				this.showPrejoin = false;
-				this.roomName = this.contextService.getRoomName();
-				// this.isSessionAlive = true;
-				// this.loading = false;
-				return;
-			} else {
-				this.route.params.subscribe((params: Params) => {
-					this.roomName = params['roomName'];
-				});
+			if (needToConfigureFlagsFromToken) {
+				this.configureFetureFlagsFromTokenPermissions();
 			}
+
+			this.loading = false;
 		} catch (error) {
 			console.error('Error fetching room preferences', error);
 		}
 	}
 
 	async onTokenRequested(participantName: string) {
-		if (this.contextService.isEmbeddedMode()) {
-			this.token = this.contextService.getToken();
-			this.loading = false;
-			this.cdr.detectChanges();
-		} else {
-			// Standard mode
-			try {
-				const { token } = await this.httpService.getToken(this.roomName, participantName);
-				this.token = token;
-			} catch (error: any) {
-				console.error(error);
-				this.serverError = error.error;
-			} finally {
-				this.loading = false;
+		try {
+			if (this.contextService.isStandardMode()) {
+				// As token is not provided, we need to set the participant name from
+				// ov-videoconference event
+				this.contextService.setParticipantName(participantName);
 			}
+
+			this.token = await this.contextService.getToken();
+		} catch (error: any) {
+			console.error(error);
+			this.serverError = error.error;
 		}
+
+		this.loading = false;
+		this.cdr.detectChanges();
 	}
 
 	onRoomDisconnected() {
@@ -114,7 +99,6 @@ export class VideoRoomComponent implements OnInit {
 		}
 
 		this.isSessionAlive = false;
-		console.log('onLeaveButtonClicked');
 		this.router.navigate([`/`]);
 	}
 
@@ -167,5 +151,44 @@ export class VideoRoomComponent implements OnInit {
 		} catch (error) {
 			console.error(error);
 		}
+	}
+
+	/**
+	 * Loads the room preferences from the global preferences service and assigns them to the component.
+	 *
+	 * This method fetches the room preferences asynchronously and updates the component's properties
+	 * based on the fetched preferences. It also updates the UI flags to show or hide certain features
+	 * like chat, recording, and activity panel based on the preferences.
+	 *
+	 * @returns {Promise<void>} A promise that resolves when the room preferences have been loaded and applied.
+	 */
+	private async loadRoomPreferences() {
+		const preferences = await this.globalPreferencesService.getRoomPreferences();
+		// Assign the preferences to the component
+		Object.assign(this, preferences);
+
+		this.featureFlags.showChat = this.chatPreferences.enabled;
+		this.featureFlags.showRecording = this.recordingPreferences.enabled;
+		this.featureFlags.showBroadcasting = this.broadcastingPreferences.enabled;
+		this.featureFlags.showActivityPanel = this.recordingPreferences.enabled || this.broadcastingPreferences.enabled;
+		this.featureFlags.showBackgrounds = this.virtualBackgroundPreferences.enabled;
+	}
+
+	/**
+	 * Configures the feature flags based on the token permissions.
+	 *
+	 * This method checks the token permissions and sets the feature flags accordingly.
+	 * @private
+	 */
+	private configureFetureFlagsFromTokenPermissions() {
+		if (this.featureFlags.showChat) {
+			this.featureFlags.showChat = this.contextService.canChat();
+		}
+
+		if (this.featureFlags.showRecording) {
+			this.featureFlags.showRecording = this.contextService.canRecord();
+		}
+
+		this.featureFlags.showPrejoin = false;
 	}
 }

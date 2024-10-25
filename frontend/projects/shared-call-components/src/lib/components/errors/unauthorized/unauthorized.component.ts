@@ -18,6 +18,8 @@ export class UnauthorizedComponent implements OnInit {
 				this.message = 'No token provided';
 			} else if (params['reason'] === 'no-iframe') {
 				this.message = 'The page is not accessible directly. Please use the OpenVidu embedded';
+			} else if (params['reason'] === 'embedded') {
+				this.message = 'The page is not accessible directly. Please use the OpenVidu embedded';
 			}
 		});
 	}

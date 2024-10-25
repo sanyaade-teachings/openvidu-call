@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { VideoRoomComponent } from '@app/pages/video-room/video-room.component';
-import { roomGuard } from '@app/guards/room.guard';
+import { standardGuard } from '@app/guards/standard.guard';
 import { embeddedGuard } from '@app/guards/embedded.guard';
 import { nonEmbeddedGuard } from '@app/guards/non-embedded.guard';
 
@@ -40,6 +40,9 @@ export const routes: Routes = [
 			{ path: 'about', component: AboutComponent }
 		]
 	},
-	{ path: ':roomName', component: VideoRoomComponent, canActivate: [roomGuard] },
-	{ path: 'unauthorized', component: UnauthorizedComponent }
+	{ path: ':roomName', component: VideoRoomComponent, canActivate: [standardGuard, nonEmbeddedGuard] },
+	{ path: 'unauthorized', component: UnauthorizedComponent },
+
+	// Redirect all other routes to home
+	{path: '**', redirectTo: 'home'}
 ];

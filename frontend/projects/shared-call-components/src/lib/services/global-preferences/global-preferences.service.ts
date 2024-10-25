@@ -12,11 +12,6 @@ export class GlobalPreferencesService {
 	// private globalPreferences: GlobalPreferences
 	private roomPreferences!: RoomPreferences;
 
-	// private roomPreferencesSubject = new Subject<RoomPreferences>();
-
-	// Observable to notify changes in the room preferences
-	// roomPreferences$ = this.roomPreferencesSubject.asObservable();
-
 	constructor(
 		private loggerService: LoggerService,
 		private httpService: HttpService
@@ -44,6 +39,5 @@ export class GlobalPreferencesService {
 		this.log.d('Saving room preferences', preferences);
 		await this.httpService.saveRoomPreferences(preferences);
 		this.roomPreferences = preferences;
-		// this.roomPreferencesSubject.next(preferences);
 	}
 }

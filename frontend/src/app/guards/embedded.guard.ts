@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { ContextService } from 'shared-call-components';
+import { ContextService, ApplicationMode } from 'shared-call-components';
 
 export const embeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
 	const contextService = inject(ContextService);
@@ -17,12 +17,12 @@ export const embeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot
 
 	const isEmbedded = state.url.includes('embedded');
 
-	contextService.setEmbeddedMode(isEmbedded);
-
 	if (isEmbedded) {
-		const token = route.queryParams['token'];
+		contextService.setApplicationMode(ApplicationMode.EMBEDDED);
 
-		if (!token) {
+		const tokenParameter = route.queryParams['token'];
+
+		if (!tokenParameter) {
 			// Redirect to the unauthorized page if the token is not provided
 			const queryParams = { reason: 'no-token' };
 			router.navigate(['embedded/unauthorized'], { queryParams });
@@ -30,7 +30,7 @@ export const embeddedGuard: CanActivateFn = async (route: ActivatedRouteSnapshot
 			return false;
 		}
 
-		contextService.setToken(token);
+		contextService.setToken(tokenParameter);
 	}
 
 	// Allow access to the requested page
