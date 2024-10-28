@@ -1,23 +1,25 @@
-<ov-videoconference
-	[token]="token"
-	[tokenError]="serverError"
-	[prejoin]="featureFlags.showPrejoin"
-	[toolbarChatPanelButton]="featureFlags.showChat"
-	[toolbarRecordingButton]="featureFlags.showRecording"
-	[toolbarBroadcastingButton]="featureFlags.showBroadcasting"
-	[activitiesPanelRecordingActivity]="featureFlags.showRecording"
-	[activitiesPanelBroadcastingActivity]="featureFlags.showBroadcasting"
-	[toolbarBackgroundEffectsButton]="featureFlags.showBackgrounds"
-	[toolbarActivitiesPanelButton]="featureFlags.showActivityPanel"
-	(onTokenRequested)="onTokenRequested($event)"
-	(onRoomDisconnected)="onRoomDisconnected()"
-	(onRecordingStartRequested)="onRecordingStartRequested($event)"
-	(onRecordingStopRequested)="onRecordingStopRequested($event)"
-	(onRecordingDeleteRequested)="onRecordingDeleteRequested($event)"
-	(onBroadcastingStartRequested)="onBroadcastingStartRequested($event)"
-	(onBroadcastingStopRequested)="onBroadcastingStopRequested($event)"
->
-</ov-videoconference>
+@if (!serverError) {
+	<ov-videoconference
+		[token]="token"
+		[tokenError]="serverError"
+		[prejoin]="featureFlags.showPrejoin"
+		[toolbarChatPanelButton]="featureFlags.showChat"
+		[toolbarRecordingButton]="featureFlags.showRecording"
+		[toolbarBroadcastingButton]="featureFlags.showBroadcasting"
+		[activitiesPanelRecordingActivity]="featureFlags.showRecording"
+		[activitiesPanelBroadcastingActivity]="featureFlags.showBroadcasting"
+		[toolbarBackgroundEffectsButton]="featureFlags.showBackgrounds"
+		[toolbarActivitiesPanelButton]="featureFlags.showActivityPanel"
+		(onTokenRequested)="onTokenRequested($event)"
+		(onRoomDisconnected)="onRoomDisconnected()"
+		(onRecordingStartRequested)="onRecordingStartRequested($event)"
+		(onRecordingStopRequested)="onRecordingStopRequested($event)"
+		(onRecordingDeleteRequested)="onRecordingDeleteRequested($event)"
+		(onBroadcastingStartRequested)="onBroadcastingStartRequested($event)"
+		(onBroadcastingStopRequested)="onBroadcastingStopRequested($event)"
+	>
+	</ov-videoconference>
+}
 
 @if (!loading && serverError) {
 	<div class="error">

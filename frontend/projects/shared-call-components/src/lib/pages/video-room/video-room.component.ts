@@ -67,11 +67,11 @@ export class VideoRoomComponent implements OnInit {
 			if (needToConfigureFlagsFromToken) {
 				this.configureFetureFlagsFromTokenPermissions();
 			}
-
-			this.loading = false;
-		} catch (error) {
+		} catch (error: any) {
 			console.error('Error fetching room preferences', error);
+			this.serverError = error.error.message || error.message || error.error;
 		}
+		this.loading = false;
 	}
 
 	async onTokenRequested(participantName: string) {
