@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RoomPreferences } from '@openvidu/call-common-types';
+import { AppearancePreferences, RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from 'openvidu-components-angular';
 import { HttpService } from '../http/http.service';
 
@@ -11,6 +11,7 @@ export class GlobalPreferencesService {
 	private log;
 	// private globalPreferences: GlobalPreferences
 	private roomPreferences!: RoomPreferences;
+	private appearancePreferences: any;
 
 	constructor(
 		private loggerService: LoggerService,
@@ -39,5 +40,32 @@ export class GlobalPreferencesService {
 		this.log.d('Saving room preferences', preferences);
 		await this.httpService.saveRoomPreferences(preferences);
 		this.roomPreferences = preferences;
+	}
+
+	/**
+	 * Retrieves the appearance preferences.
+	 * If the preferences are not already loaded, it fetches them from the server.
+	 *
+	 * @returns {Promise<AppearancePreferences>} A promise that resolves to the appearance preferences.
+	 */
+	async getAppearancePreferences(): Promise<AppearancePreferences> {
+		if (!this.roomPreferences) {
+			this.log.d('Appearance preferences not found, fetching from server');
+			this.appearancePreferences = await this.httpService.getAppearancePreferences();
+		}
+
+		return this.appearancePreferences;
+	}
+
+	/**
+	 * Saves the appearance preferences.
+	 *
+	 * @param {AppearancePreferences} preferences - The preferences to be saved.
+	 * @returns {Promise<void>} A promise that resolves when the preferences have been saved.
+	 */
+	async saveAppearancePreferences(preferences: AppearancePreferences): Promise<void> {
+		this.log.d('Saving appearance preferences', preferences);
+		await this.httpService.saveAppearancePreferences(preferences);
+		this.appearancePreferences = preferences;
 	}
 }

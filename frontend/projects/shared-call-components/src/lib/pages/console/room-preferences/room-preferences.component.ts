@@ -3,7 +3,6 @@ import { RoomPreferences } from '@openvidu/call-common-types';
 import { GlobalPreferencesService, NotificationService } from '../../../services';
 import { DynamicGridComponent, ToggleCardComponent } from '../../../components';
 
-
 @Component({
 	selector: 'ov-room-preferences',
 	standalone: true,
@@ -25,16 +24,7 @@ export class RoomPreferencesComponent implements OnInit {
 
 	async ngOnInit() {
 		try {
-			this.roomPreferences = await this.globalPreferencesService.getRoomPreferences();
-
-			console.log('Room preferences', this.roomPreferences);
-
-			const { recordingPreferences, broadcastingPreferences, chatPreferences, virtualBackgroundPreferences } =
-				this.roomPreferences;
-			this.recordingEnabled = recordingPreferences.enabled;
-			this.broadcastingEnabled = broadcastingPreferences.enabled;
-			this.chatEnabled = chatPreferences.enabled;
-			this.backgroundsEnabled = virtualBackgroundPreferences.enabled;
+			await this.loadRoomPreferences();
 		} catch (error) {
 			console.error('Error fetching room preferences', error);
 		}
@@ -95,5 +85,28 @@ export class RoomPreferencesComponent implements OnInit {
 			console.error('Error saving virtual background preferences', error);
 			// TODO: Show a toast message
 		}
+	}
+
+	/**
+	 * Loads the room preferences from the global preferences service and assigns them to the component's properties.
+	 *
+	 * @returns {Promise<void>} A promise that resolves when the room preferences have been loaded and assigned.
+	 */
+	private async loadRoomPreferences() {
+		const preferences = await this.globalPreferencesService.getRoomPreferences();
+		this.roomPreferences = preferences;
+
+		console.log('Room preferences:', preferences);
+
+		// Destructures the `preferences` object to extract the enabled status of various features.
+		const {
+			recordingPreferences: { enabled: recordingEnabled },
+			broadcastingPreferences: { enabled: broadcastingEnabled },
+			chatPreferences: { enabled: chatEnabled },
+			virtualBackgroundPreferences: { enabled: backgroundsEnabled }
+		} = preferences;
+
+		// Assigns the extracted values to the component's properties.
+		Object.assign(this, { recordingEnabled, broadcastingEnabled, chatEnabled, backgroundsEnabled });
 	}
 }

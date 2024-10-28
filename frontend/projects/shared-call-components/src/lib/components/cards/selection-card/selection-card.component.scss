@@ -18,7 +18,48 @@
 
 .card-content {
 	display: flex;
+	flex-wrap: wrap;
+
 	align-items: center;
-	gap: 16px;
+	// gap: 16px;
 	// padding: 20px;
+}
+
+.item-option {
+	text-align: center;
+	flex: 0 31%;
+	height: 100px;
+	// margin-bottom: 1%; /* (100-32*3)/2 */
+}
+
+.item-option + .item-option {
+	margin-left: 2%;
+}
+
+$radius2: 50%;
+$height2: 35px;
+
+#round-input[type='color'] {
+	display: inline-flex;
+	vertical-align: bottom;
+	border: 1px solid #c5c5c5;
+	border-radius: $radius2;
+	padding: 0;
+	height: $height2;
+	width: 35px;
+	cursor: pointer;
+
+	&::-webkit-color-swatch-wrapper {
+		padding: 0;
+	}
+
+	&::-webkit-color-swatch {
+		border: 0;
+		border-radius: $radius2 $radius2 0 0;
+	}
+
+	&::-moz-color-swatch {
+		border: 0;
+		border-radius: $radius2 $radius2 0 0;
+	}
 }
