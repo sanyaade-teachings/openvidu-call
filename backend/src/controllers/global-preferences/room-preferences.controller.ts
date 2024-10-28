@@ -41,8 +41,9 @@ export const getRoomPreferences = async (req: Request, res: Response) => {
 		}
 
 		return res.status(200).json(preferences.value);
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error fetching room preferences:', error);
-		return res.status(500).json({ message: 'Error fetching room preferences', error });
+		//TODO: Implement error handling
+		return res.status(500).json({ message: `${error.parent.code}. Error fetching room preferences from database`, error });
 	}
 };
