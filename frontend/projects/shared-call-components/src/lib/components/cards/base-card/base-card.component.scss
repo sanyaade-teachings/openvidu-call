@@ -61,3 +61,10 @@
 	font-size: 0.9rem;
 	color: #666;
 }
+
+.disabled {
+	opacity: 0.5; // Visualmente se ve deshabilitado
+	pointer-events: none; // Desactiva todos los eventos de interacción
+	user-select: none; // Evita que el usuario seleccione el texto o elementos dentro de la tarjeta
+	filter: grayscale(80%); // Hace que los colores parezcan apagados (opcional)
+}

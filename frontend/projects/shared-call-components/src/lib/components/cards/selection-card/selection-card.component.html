@@ -1,5 +1,17 @@
-<ov-base-card [title]="title" [description]="description" [icon]="icon" [iconBackgroundColor]="iconBackgroundColor">
+<ov-base-card
+	[disabled]="disabled"
+	[title]="title"
+	[description]="description"
+	[icon]="icon"
+	[iconBackgroundColor]="iconBackgroundColor"
+>
 	<div card-content class="card-content">
+		@if (disabled) {
+			<div class="disabled-overlay">
+				<p>This card is only available in the PRO version</p>
+			</div>
+		}
+
 		@if (selectionType === 'text') {
 			<mat-form-field card-content>
 				<mat-select [(value)]="selectedOption" (selectionChange)="onSelectionChange($event)">

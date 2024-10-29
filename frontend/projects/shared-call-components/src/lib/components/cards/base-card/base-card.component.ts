@@ -12,6 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class BaseCardComponent implements AfterViewInit {
 	/**
+	 * Whether the card is disabled or not. Defaults to false.
+	 * If true, the card will not be clickable.
+	 **/
+	@Input() disabled: boolean = false;
+	/**
 	 * The title of the dynamic card component.
 	 * This input property allows setting a custom title for the card.
 	 */
@@ -47,7 +52,7 @@ export class BaseCardComponent implements AfterViewInit {
 	constructor(protected cdr: ChangeDetectorRef) {}
 
 	ngAfterViewInit() {
-    console.log(this.cardContent)
+		console.log(this.cardContent);
 		this.showCardContent = this.cardContent?.nativeElement.children.length > 0;
 		this.cdr.detectChanges();
 	}
