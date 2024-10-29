@@ -15,8 +15,15 @@ import {
 	getAppearancePreferences,
 	updateAppearancePreferences
 } from '../controllers/global-preferences/appearance-preferences.controller.js';
+import rateLimit from 'express-rate-limit';
 
 const apiRouter = Router();
+// Limit login attempts for avoiding brute force attacks
+const loginLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 min
+	max: 5,
+	message: 'Too many login attempts, please try again later.'
+});
 
 apiRouter.use(bodyParser.urlencoded({ extended: true }));
 apiRouter.use(bodyParser.json());
@@ -40,7 +47,7 @@ apiRouter.put('/broadcasts/:broadcastId', withUserBasicAuth, broadcastCtrl.stopB
 // Auth Routes
 apiRouter.post('/login', authCtrl.login);
 apiRouter.post('/logout', authCtrl.logout);
-apiRouter.post('/admin/login', authCtrl.adminLogin);
+apiRouter.post('/admin/login', loginLimiter, authCtrl.adminLogin);
 apiRouter.post('/admin/logout', authCtrl.adminLogout);
 
 // Global Preferences Routes

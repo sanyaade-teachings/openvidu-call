@@ -77,13 +77,13 @@ export class HttpService {
 		return this.postRequest(`${this.pathPrefix}/rooms`, { roomName, participantName }, headers);
 	}
 
-	// adminLogin(body: { username: string; password: string }): Promise<{ message: string }> {
-	// 	return this.postRequest(`${this.pathPrefix}/admin/login`, body);
-	// }
+	adminLogin(body: { username: string; password: string }): Promise<{ message: string }> {
+		return this.postRequest(`${this.pathPrefix}/admin/login`, body);
+	}
 
-	// adminLogout(): Promise<{ message: string }> {
-	// 	return this.postRequest(`${this.pathPrefix}/admin/logout`, {});
-	// }
+	adminLogout(): Promise<{ message: string }> {
+		return this.postRequest(`${this.pathPrefix}/admin/logout`, {});
+	}
 
 	userLogin(body: { username: string; password: string }): Promise<{ message: string }> {
 		return this.postRequest(`${this.pathPrefix}/login`, body);

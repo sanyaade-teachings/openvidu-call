@@ -69,7 +69,22 @@ export class AuthService {
 		return true;
 	}
 
+	// TODO: use hash and salt for password storage
 	authenticateAdmin(username: string, password: string): boolean {
 		return username === CALL_ADMIN_USER && password === CALL_ADMIN_SECRET;
+	}
+
+	validateCredentials(username: string, password: string): string[] {
+		const errors: string[] = [];
+
+	if (!username || username.length < 4) {
+		errors.push('Username must be at least 4 characters long.');
+	}
+
+	if (!password || password.length < 4) {
+		errors.push('Password must be at least 4 characters long.');
+	}
+
+	return errors;
 	}
 }

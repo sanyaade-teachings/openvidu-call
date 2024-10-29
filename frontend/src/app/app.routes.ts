@@ -13,7 +13,8 @@ import {
 	embeddedGuard,
 	nonEmbeddedGuard,
 	standardGuard,
-	VideoRoomComponent
+	VideoRoomComponent,
+	ConsoleLoginComponent
 } from 'shared-call-components';
 export const routes: Routes = [
 	// Embedded mode
@@ -26,10 +27,11 @@ export const routes: Routes = [
 
 	{ path: '', redirectTo: 'console', pathMatch: 'full' },
 	{ path: 'home', component: HomeComponent, canActivate: [nonEmbeddedGuard] },
+	{path: 'login', component: ConsoleLoginComponent},
 	{
 		path: 'console',
 		component: ConsoleComponent,
-		canActivate: [nonEmbeddedGuard],
+		canActivate: [nonEmbeddedGuard, /* checkAdminTokenGuard */],
 		children: [
 			{ path: '', redirectTo: 'overview', pathMatch: 'full' },
 			{ path: 'overview', component: OverviewComponent },

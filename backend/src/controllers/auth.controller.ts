@@ -32,19 +32,22 @@ export const adminLogin = (req: Request, res: Response) => {
 	logger.verbose('Admin login request received');
 	const { username, password } = req.body;
 
-	if (!username || !password) {
-		logger.warn('Missing username or password');
-		return res.status(400).json({ message: 'Missing username or password' });
+	const validationErrors = authService.validateCredentials(username, password);
+
+	if (validationErrors.length > 0) {
+		logger.warn('Validation errors:' + validationErrors);
+		return res.status(400).json({ message: 'Invalid input', errors: validationErrors });
 	}
 
 	const authenticated = authService.authenticateAdmin(username, password);
 
 	if (!authenticated) {
-		logger.warn('Admin login failed');
-		return res.status(401).json({ message: 'Admin login failed' });
+		logger.warn(`Admin login failed for username: ${username}`);
+		return res.status(401).json({ message: 'Admin login failed. Invalid username or password' });
 	}
 
-	logger.info('Admin login succeeded');
+	//TODO: Generate JWT token
+	logger.info(`Admin login succeeded for username: ${username}`);
 	return res.status(200).json({ message: 'Admin login succeeded' });
 };
 
