@@ -18,11 +18,12 @@ export class SelectionCardComponent extends BaseCardComponent {
 
 	@Input() selectionType: 'text' | 'color' = 'text';
 	@Output() onOptionSelected = new EventEmitter<any>();
+	@Output() onColorChanged = new EventEmitter<{ label: string; value: string }>();
 	onSelectionChange(event: any) {
 		this.onOptionSelected.emit(event.value);
 	}
 
 	onColorChange(label: string, event: any) {
-		console.log('color changed', label, event.target.value);
+		this.onColorChanged.emit({ label, value: event.target.value });
 	}
 }

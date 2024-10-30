@@ -52,7 +52,6 @@ export class BaseCardComponent implements AfterViewInit {
 	constructor(protected cdr: ChangeDetectorRef) {}
 
 	ngAfterViewInit() {
-		console.log(this.cardContent);
 		this.showCardContent = this.cardContent?.nativeElement.children.length > 0;
 		this.cdr.detectChanges();
 	}
