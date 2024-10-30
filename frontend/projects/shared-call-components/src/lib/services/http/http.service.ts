@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AppearancePreferences, GlobalPreferences, RoomPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences, RoomPreferences } from '@openvidu/call-common-types';
 import { RecordingInfo } from 'openvidu-components-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -9,9 +9,9 @@ import { lastValueFrom } from 'rxjs';
 })
 export class HttpService {
 	// private baseHref: string;
-	private pathPrefix = 'call/api';
+	protected pathPrefix = 'call/api';
 
-	constructor(private http: HttpClient) {
+	constructor(protected http: HttpClient) {
 		// this.baseHref = '/' + (!!window.location.pathname.split('/')[1] ? window.location.pathname.split('/')[1] + '/' : '');
 	}
 
@@ -35,15 +35,6 @@ export class HttpService {
 		return this.getRequest(`${this.pathPrefix}/preferences/room`, headers);
 	}
 
-	/**
-	 * Retrieves the room preferences.
-	 *
-	 * @returns {Promise<AppearancePreferences>} A promise that resolves to the app appearance preferences.
-	 */
-	getAppearancePreferences(): Promise<AppearancePreferences> {
-		const headers = this.generateUserHeaders();
-		return this.getRequest(`${this.pathPrefix}/preferences/appearance`, headers);
-	}
 
 	/**
 	 * Saves the room preferences.
@@ -56,16 +47,6 @@ export class HttpService {
 		return this.putRequest(`${this.pathPrefix}/preferences/room`, preferences, headers);
 	}
 
-	/**
-	 * Saves the app appearance preferences.
-	 *
-	 * @param preferences - The app appearance preferences to be saved.
-	 * @returns A promise that resolves when the preferences have been successfully saved.
-	 */
-	saveAppearancePreferences(preferences: AppearancePreferences): Promise<any> {
-		const headers = this.generateUserHeaders();
-		return this.putRequest(`${this.pathPrefix}/preferences/appearance`, preferences, headers);
-	}
 
 	async getConfig() {
 		return this.getRequest(`${this.pathPrefix}/config`);
@@ -137,7 +118,7 @@ export class HttpService {
 		return this.putRequest(`${this.pathPrefix}/broadcasts/${broadcastId}`, {}, headers);
 	}
 
-	private postRequest(path: string, body: any, headers?: HttpHeaders): Promise<any> {
+	protected postRequest(path: string, body: any, headers?: HttpHeaders): Promise<any> {
 		try {
 			return lastValueFrom(this.http.post<any>(path, body, { headers }));
 		} catch (error: any) {
@@ -149,7 +130,7 @@ export class HttpService {
 		}
 	}
 
-	private getRequest(path: string, headers?: HttpHeaders): any {
+	protected getRequest(path: string, headers?: HttpHeaders): any {
 		try {
 			return lastValueFrom(this.http.get(path, { headers }));
 		} catch (error: any) {
@@ -161,7 +142,7 @@ export class HttpService {
 		}
 	}
 
-	private deleteRequest(path: string, headers?: HttpHeaders) {
+	protected deleteRequest(path: string, headers?: HttpHeaders) {
 		try {
 			return lastValueFrom(this.http.delete<any>(path, { headers }));
 		} catch (error: any) {
@@ -175,7 +156,7 @@ export class HttpService {
 		}
 	}
 
-	private putRequest(path: string, body: any = {}, headers?: HttpHeaders) {
+	protected putRequest(path: string, body: any = {}, headers?: HttpHeaders) {
 		try {
 			return lastValueFrom(this.http.put<any>(path, body, { headers }));
 		} catch (error: any) {
@@ -187,19 +168,10 @@ export class HttpService {
 		}
 	}
 
-	private generateUserHeaders(): HttpHeaders {
+	protected generateUserHeaders(): HttpHeaders {
 		const headers = new HttpHeaders({
 			'Content-Type': 'application/json'
 		});
-		//! TODO: Fix this
-		// const userCredentials = this.storageService.getParticipantCredentials();
-
-		// if (userCredentials?.username && userCredentials?.password) {
-		// 	return headers.append(
-		// 		'Authorization',
-		// 		`Basic ${btoa(`${userCredentials.username}:${userCredentials.password}`)}`
-		// 	);
-		// }
 
 		return headers;
 	}
