@@ -11,7 +11,9 @@
 	],
 	"scripts": {
 		"build": "tsc",
-		"sync": "npm run build && npm pack && PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --prefix ../frontend && npm install ../backend/$PACKAGE --prefix ../backend",
+		"sync-ce": "npm run build && npm pack && PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --prefix ../frontend && npm install ../backend/$PACKAGE --prefix ../backend",
+		"sync-pro": "npm run build && npm pack && PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../../openvidu-call-pro/frontend && cp $PACKAGE ../../openvidu-call-pro/backend && npm install ../../openvidu-call-pro/frontend/$PACKAGE --prefix ../../openvidu-call-pro/frontend --no-save && npm install ../../openvidu-call-pro/backend/$PACKAGE --prefix ../../openvidu-call-pro/backend --no-save",
+		"sync": "npm run sync-ce && npm run sync-pro",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],

@@ -1,12 +1,12 @@
 export interface AppearancePreferences {
-	theme: string;
+	// theme: string;
 	colors: Map<string, string>;
-	styles: {
-		radius: {
-			button: string;
-			leaveButton: string;
-			video: string;
-			panel: string;
-		};
-	};
+	// styles: {
+	// 	radius: {
+	// 		button: string;
+	// 		leaveButton: string;
+	// 		video: string;
+	// 		panel: string;
+	// 	};
+	// };
 }
