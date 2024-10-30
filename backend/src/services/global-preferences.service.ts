@@ -2,11 +2,19 @@ import { RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from './logger.service.js';
 import { GlobalPreferencesModel } from '../models/global-preferences.model.js';
 
-export class GlobalPreferencseService {
-	private logger = LoggerService.getInstance();
-	protected static instance: GlobalPreferencseService;
+export class GlobalPreferencesService {
+	protected logger = LoggerService.getInstance();
+	protected static instance: GlobalPreferencesService;
 
-	private constructor() {}
+	protected constructor() {}
+
+	static getInstance() {
+		if (!GlobalPreferencesService.instance) {
+			GlobalPreferencesService.instance = new GlobalPreferencesService();
+		}
+
+		return GlobalPreferencesService.instance;
+	}
 
 	/**
 	 * Initializes the default global preferences if they do not already exist.
@@ -15,7 +23,7 @@ export class GlobalPreferencseService {
 	 *
 	 * @throws Will log an error if there is an issue accessing or modifying the database.
 	 */
-	initializeDefaultPreferences = async () => {
+	async initializeDefaultPreferences() {
 		try {
 			const existingPreferences = await GlobalPreferencesModel.findAll();
 
@@ -29,12 +37,6 @@ export class GlobalPreferencseService {
 							chatPreferences: { enabled: true },
 							virtualBackgroundPreferences: { enabled: true }
 						}
-					},
-					{
-						key: 'appearancePreferences',
-						value: {
-							theme: 'light'
-						}
 					}
 				]);
 
@@ -46,14 +48,6 @@ export class GlobalPreferencseService {
 			this.logger.error('Error initializing default preferences:' + JSON.stringify(error));
 		}
 	};
-
-	static getInstance() {
-		if (!GlobalPreferencseService.instance) {
-			GlobalPreferencseService.instance = new GlobalPreferencseService();
-		}
-
-		return GlobalPreferencseService.instance;
-	}
 
 	getRoomPreferences(): Promise<GlobalPreferencesModel | null> {
 		return GlobalPreferencesModel.findOne({ where: { key: 'roomPreferences' } });
@@ -94,7 +88,7 @@ export class GlobalPreferencseService {
 		}
 	}
 
-	validatePreferences(preferences: RoomPreferences) {
+	validateRoomPreferences(preferences: RoomPreferences) {
 		const { recordingPreferences, broadcastingPreferences, chatPreferences, virtualBackgroundPreferences } =
 			preferences;
 

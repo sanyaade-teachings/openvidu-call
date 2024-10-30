@@ -17,7 +17,8 @@ import {
 } from '../controllers/global-preferences/appearance-preferences.controller.js';
 import rateLimit from 'express-rate-limit';
 
-const apiRouter = Router();
+export const apiRouter = Router();
+
 // Limit login attempts for avoiding brute force attacks
 const loginLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 min
@@ -47,7 +48,7 @@ apiRouter.put('/broadcasts/:broadcastId', withUserBasicAuth, broadcastCtrl.stopB
 // Auth Routes
 apiRouter.post('/login', authCtrl.login);
 apiRouter.post('/logout', authCtrl.logout);
-apiRouter.post('/admin/login', loginLimiter,  authCtrl.adminLogin);
+apiRouter.post('/admin/login', loginLimiter, authCtrl.adminLogin);
 apiRouter.post('/admin/logout', authCtrl.adminLogout);
 
 // Global Preferences Routes
@@ -55,7 +56,6 @@ apiRouter.post('/admin/logout', authCtrl.adminLogout);
 
 apiRouter.put('/preferences/room', /*withAdminBasicAuth,*/ updateRoomPreferences);
 apiRouter.get('/preferences/room', /*withAdminBasicAuth,*/ getRoomPreferences);
-
 apiRouter.put('/preferences/appearance', /*withAdminAndUserBasicAuth*/ updateAppearancePreferences);
 apiRouter.get('/preferences/appearance', /*withAdminAndUserBasicAuth*/ getAppearancePreferences);
 
@@ -63,5 +63,3 @@ apiRouter.get('/config', getConfig); // TODO: remove this route
 
 // Health Check Route
 apiRouter.get('/healthcheck', withAdminAndUserBasicAuth, healthCheck);
-
-export { apiRouter };

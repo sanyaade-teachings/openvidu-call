@@ -30,6 +30,7 @@ import {
 	DB_PASSWORD
 } from './config.js';
 import { embeddedRouter } from './routes/embedded.routes.js';
+import { GlobalPreferencesService } from './services/global-preferences.service.js';
 
 const createApp = () => {
 	const app = express();
@@ -43,7 +44,7 @@ const createApp = () => {
 	app.use(express.json());
 
 	// Initialize Sequelize
-	sequelizeSync();
+	sequelizeSync(GlobalPreferencesService.getInstance());
 
 	// Setup routes
 	app.use('/call/api', apiRouter);

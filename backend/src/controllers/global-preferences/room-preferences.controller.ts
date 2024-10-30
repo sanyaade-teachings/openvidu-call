@@ -1,26 +1,24 @@
 // src/controllers/roomPreferences.controller.ts
 import { Request, Response } from 'express';
 import { LoggerService } from '../../services/logger.service.js';
-import { GlobalPreferencseService } from '../../services/global-preferences.service.js';
+import { GlobalPreferencesService } from '../../services/global-preferences.service.js';
 import { OpenViduCallError } from '../../models/error.model.js';
 
 const logger = LoggerService.getInstance();
-const preferenceService = GlobalPreferencseService.getInstance();
+const preferenceService = GlobalPreferencesService.getInstance();
 
 export const updateRoomPreferences = async (req: Request, res: Response) => {
-	logger.verbose('Updating room preferences:' + JSON.stringify(req.body));
+	logger.verbose(`Updating room preferences: ${JSON.stringify(req.body)}`);
 	const roomPreferences = req.body;
 
 	try {
-		preferenceService.validatePreferences(roomPreferences);
+		preferenceService.validateRoomPreferences(roomPreferences);
 
 		const savedPreferences = await preferenceService.updateRoomPreferences(roomPreferences);
 
 		return res
 			.status(200)
 			.json({ message: 'Room preferences updated successfully.', preferences: savedPreferences });
-
-
 	} catch (error) {
 		if (error instanceof OpenViduCallError) {
 			logger.error(`Error saving room preferences: ${error.message}`);
@@ -44,6 +42,8 @@ export const getRoomPreferences = async (req: Request, res: Response) => {
 	} catch (error: any) {
 		console.error('Error fetching room preferences:', error);
 		//TODO: Implement error handling
-		return res.status(500).json({ message: `${error.parent.code}. Error fetching room preferences from database`, error });
+		return res
+			.status(500)
+			.json({ message: `${error.parent.code}. Error fetching room preferences from database`, error });
 	}
 };

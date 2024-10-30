@@ -6,3 +6,4 @@ export * from './recording.service.js';
 export * from './room.service.js';
 export * from './s3.service.js';
 export * from './webhook.service.js';
+export * from './global-preferences.service.js';
