@@ -47,7 +47,7 @@ apiRouter.put('/broadcasts/:broadcastId', withUserBasicAuth, broadcastCtrl.stopB
 // Auth Routes
 apiRouter.post('/login', authCtrl.login);
 apiRouter.post('/logout', authCtrl.logout);
-apiRouter.post('/admin/login', loginLimiter, authCtrl.adminLogin);
+apiRouter.post('/admin/login', loginLimiter,  authCtrl.adminLogin);
 apiRouter.post('/admin/logout', authCtrl.adminLogout);
 
 // Global Preferences Routes
