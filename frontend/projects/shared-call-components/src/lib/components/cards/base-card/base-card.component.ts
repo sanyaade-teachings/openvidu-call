@@ -33,6 +33,21 @@ export class BaseCardComponent implements AfterViewInit {
 	 * @default 'settings'
 	 */
 	@Input() icon: string = 'settings';
+
+	/**
+	 * The color of the icon.
+	 *
+	 * @default '#ffffff'
+	 */
+	@Input() iconColor: string = '#ffffff';
+
+	/**
+	 *
+	 * The URL of the icon to be displayed.
+	 *
+	 *
+	 */
+	@Input() iconUrl: string = '';
 	/**
 	 * The background color of the icon.
 	 *

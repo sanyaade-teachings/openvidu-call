@@ -41,6 +41,17 @@
 	justify-content: center;
 }
 
+.icon-container:has(.app-logo) {
+	padding: 0px;
+}
+.app-logo {
+	width: 56px;
+	height: 56px;
+	border-radius: 4px;
+	object-fit: contain;
+	padding: 0px;
+}
+
 .card-icon {
 	color: white;
 	font-size: 24px;

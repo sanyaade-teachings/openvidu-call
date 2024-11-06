@@ -1,7 +1,11 @@
 <mat-card class="base-card" [style.background-color]="cardBackgroundColor" [class]="{ disabled: disabled }">
 	<div class="card-header">
 		<div class="icon-container" [style.background-color]="iconBackgroundColor">
-			<mat-icon class="card-icon">{{ icon }}</mat-icon>
+			@if (iconUrl) {
+				<img [src]="iconUrl" alt="App Logo" class="app-logo" />
+			} @else {
+				<mat-icon class="card-icon" [style.color]="iconColor">{{ icon }}</mat-icon>
+			}
 		</div>
 		<div class="text-container">
 			<div class="card-title">{{ title }}</div>
