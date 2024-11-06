@@ -4,9 +4,10 @@ export interface AppearancePreferences {
 }
 
 export enum ThemeOptions {
-	DARK = 'dark',
-	LIGHT = 'light',
-	OPENVIDU = 'openvidu',
+	NONE = 'None',
+	DARK = 'Dark',
+	LIGHT = 'Light',
+	OPENVIDU = 'OpenVidu',
 }
 
 // If this has value, it will override the default theme
