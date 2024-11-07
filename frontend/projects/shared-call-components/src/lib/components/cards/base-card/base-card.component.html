@@ -1,5 +1,5 @@
 <mat-card class="base-card" [style.background-color]="cardBackgroundColor" [class]="{ disabled: disabled }">
-	<div class="card-header">
+	<div class="card-header" [class.balancedPadding]="!showCardContent">
 		<div class="icon-container" [style.background-color]="iconBackgroundColor">
 			@if (iconUrl) {
 				<img [src]="iconUrl" alt="App Logo" class="app-logo" />
@@ -11,6 +11,8 @@
 			<div class="card-title">{{ title }}</div>
 			<div class="card-subtitle">{{ description }}</div>
 		</div>
+
+		<ng-content select="[card-header-tag]"></ng-content>
 	</div>
 	@if (showCardContent) {
 		<div class="divider"></div>

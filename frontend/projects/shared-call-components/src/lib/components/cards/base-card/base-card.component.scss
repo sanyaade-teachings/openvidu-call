@@ -15,6 +15,11 @@
 	align-items: center;
 	gap: 16px;
 	padding: 20px 20px 10px 20px;
+	position: relative;
+}
+
+.card-header.balancedPadding {
+	padding: 20px !important;
 }
 
 .card-content {
@@ -60,6 +65,7 @@
 .text-container {
 	display: flex;
 	flex-direction: column;
+	flex-grow: 1;
 }
 
 .card-title {

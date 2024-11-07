@@ -5,13 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { DialogComponent } from '../../components/dialog/dialog.component';
-
-export interface DialogOptions {
-	title?: string;
-	message: string;
-	confirmText?: string;
-	cancelText?: string;
-}
+import { DialogOptions } from '../../models';
 
 @Injectable({
 	providedIn: 'root'
@@ -55,9 +49,9 @@ export class NotificationService {
 	// Método para mostrar un diálogo
 	showDialog(options: DialogOptions): void {
 		this.dialog.open(DialogComponent, {
-			data: options, // Pasa las opciones al componente del diálogo
+			data: options,
 			width: '400px',
-			disableClose: true // Evita que se cierre haciendo clic fuera del diálogo
+			disableClose: true
 		});
 	}
 
