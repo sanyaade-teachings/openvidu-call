@@ -11,9 +11,10 @@
 	"scripts": {
 		"build": "tsc",
 		"serve": "tsc -w",
-		"sync-ce": "PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --save-dev --prefix ../frontend && npm install ../backend/$PACKAGE --save-dev --prefix ../backend",
-		"sync-pro": "PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../../openvidu-call-pro/frontend && cp $PACKAGE ../../openvidu-call-pro/backend && npm install ../../openvidu-call-pro/frontend/$PACKAGE --save-dev --prefix ../../openvidu-call-pro/frontend && npm install ../../openvidu-call-pro/backend/$PACKAGE --prefix ../../openvidu-call-pro/backend --save-dev",
-		"sync": "npm run build && npm pack && npm run sync-ce && npm run sync-pro"
+		"package": "npm run build && npm pack",
+		"sync-ce": "npm run package && PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --save-dev --prefix ../frontend && npm install ../backend/$PACKAGE --save-dev --prefix ../backend",
+		"sync-pro": "npm run package && PACKAGE=$(ls openvidu-call-common-types-*.tgz) && cp $PACKAGE ../../openvidu-call-pro/frontend && cp $PACKAGE ../../openvidu-call-pro/backend && npm install ../../openvidu-call-pro/frontend/$PACKAGE --save-dev --prefix ../../openvidu-call-pro/frontend && npm install ../../openvidu-call-pro/backend/$PACKAGE --prefix ../../openvidu-call-pro/backend --save-dev",
+		"sync": "npm run sync-ce && npm run sync-pro"
 	},
 	"devDependencies": {
 		"typescript": "^5.6.3"
