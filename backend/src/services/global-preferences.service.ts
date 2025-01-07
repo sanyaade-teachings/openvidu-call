@@ -1,51 +1,6 @@
 import { RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from './logger.service.js';
 import { GlobalPreferencesModel } from '../models/global-preferences.model.js';
-import { Request, Response, NextFunction } from 'express';
-
-export const withRecordingEnabled = async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const preferences = await GlobalPreferencesService.getInstance().getRoomPreferences();
-
-		if (preferences) {
-			const { recordingPreferences } = preferences.value as RoomPreferences;
-
-			if (!recordingPreferences.enabled) {
-				return res.status(403).json({ message: 'Recording is disabled in this room.' });
-			}
-
-			return next();
-		}
-
-		LoggerService.getInstance().error('No room preferences found checking recording preferences. Refusing access.');
-		return res.status(403).json({ message: 'Recording is disabled in this room.' });
-	} catch (error) {
-		LoggerService.getInstance().error('Error checking recording preferences:' + error);
-		return res.status(403).json({ message: 'Recording is disabled in this room.' });
-	}
-};
-
-export const withBroadcastingEnabled = async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const preferences = await GlobalPreferencesService.getInstance().getRoomPreferences();
-
-		if (preferences) {
-			const { broadcastingPreferences } = preferences.value as RoomPreferences;
-
-			if (!broadcastingPreferences.enabled) {
-				return res.status(403).json({ message: 'Broadcasting is disabled in this room.' });
-			}
-
-			return next();
-		}
-
-		LoggerService.getInstance().error('No room preferences found checking broadcasting preferences. Refusing access.');
-		return res.status(403).json({ message: 'Broadcasting is disabled in this room.' });
-	} catch (error) {
-		LoggerService.getInstance().error('Error checking broadcasting preferences:' + error);
-		return res.status(403).json({ message: 'Broadcasting is disabled in this room.' });
-	}
-};
 
 export class GlobalPreferencesService {
 	protected logger = LoggerService.getInstance();

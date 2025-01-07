@@ -7,7 +7,9 @@ import * as authCtrl from '../controllers/auth.controller.js';
 import { getConfig } from '../controllers/global-preferences/global-preferences.controller.js';
 import { healthCheck } from '../controllers/healthcheck.controller.js';
 import { withAdminAndUserBasicAuth, withAdminBasicAuth, withUserBasicAuth } from '../middlewares/auth.middleware.js';
-import { withBroadcastingEnabled, withRecordingEnabled } from '../services/global-preferences.service.js';
+import { withRecordingEnabled } from '../middlewares/recording.middleware.js';
+import { withBroadcastingEnabled } from '../middlewares/broadcasting.middleware.js';
+
 import {
 	getRoomPreferences,
 	updateRoomPreferences
