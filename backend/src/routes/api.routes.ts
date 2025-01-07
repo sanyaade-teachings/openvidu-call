@@ -7,6 +7,7 @@ import * as authCtrl from '../controllers/auth.controller.js';
 import { getConfig } from '../controllers/global-preferences/global-preferences.controller.js';
 import { healthCheck } from '../controllers/healthcheck.controller.js';
 import { withAdminAndUserBasicAuth, withAdminBasicAuth, withUserBasicAuth } from '../services/auth.service.js';
+import { withBroadcastingEnabled, withRecordingEnabled } from '../services/global-preferences.service.js';
 import {
 	getRoomPreferences,
 	updateRoomPreferences
@@ -33,17 +34,17 @@ apiRouter.use(bodyParser.json());
 apiRouter.post('/rooms', withUserBasicAuth, roomCtrl.createRoom);
 
 // Recording Routes
-apiRouter.post('/recordings', withUserBasicAuth, recordingCtrl.startRecording);
-apiRouter.put('/recordings/:recordingId', withUserBasicAuth, recordingCtrl.stopRecording);
-apiRouter.get('/recordings/:recordingId/stream', recordingCtrl.streamRecording);
-apiRouter.delete('/recordings/:recordingId', withUserBasicAuth, recordingCtrl.deleteRecording);
+apiRouter.post('/recordings', withUserBasicAuth, withRecordingEnabled, recordingCtrl.startRecording);
+apiRouter.put('/recordings/:recordingId', withUserBasicAuth, withRecordingEnabled, recordingCtrl.stopRecording);
+apiRouter.get('/recordings/:recordingId/stream', withRecordingEnabled, recordingCtrl.streamRecording);
+apiRouter.delete('/recordings/:recordingId', withUserBasicAuth, withRecordingEnabled, recordingCtrl.deleteRecording);
 
-apiRouter.get('/admin/recordings', withAdminBasicAuth, recordingCtrl.getAllRecordings);
-apiRouter.delete('/admin/recordings/:recordingId', withAdminBasicAuth, recordingCtrl.deleteRecording);
+apiRouter.get('/admin/recordings', withAdminBasicAuth, withRecordingEnabled, recordingCtrl.getAllRecordings);
+apiRouter.delete('/admin/recordings/:recordingId', withAdminBasicAuth, withRecordingEnabled, recordingCtrl.deleteRecording);
 
 // Broadcasting Routes
-apiRouter.post('/broadcasts', withUserBasicAuth, broadcastCtrl.startBroadcasting);
-apiRouter.put('/broadcasts/:broadcastId', withUserBasicAuth, broadcastCtrl.stopBroadcasting);
+apiRouter.post('/broadcasts', withUserBasicAuth, withBroadcastingEnabled, broadcastCtrl.startBroadcasting);
+apiRouter.put('/broadcasts/:broadcastId', withUserBasicAuth, withBroadcastingEnabled, broadcastCtrl.stopBroadcasting);
 
 // Auth Routes
 apiRouter.post('/login', authCtrl.login);
