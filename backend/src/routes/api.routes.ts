@@ -6,7 +6,7 @@ import * as broadcastCtrl from '../controllers/broadcasting.controller.js';
 import * as authCtrl from '../controllers/auth.controller.js';
 import { getConfig } from '../controllers/global-preferences/global-preferences.controller.js';
 import { healthCheck } from '../controllers/healthcheck.controller.js';
-import { withAdminAndUserBasicAuth, withAdminBasicAuth, withUserBasicAuth } from '../services/auth.service.js';
+import { withAdminAndUserBasicAuth, withAdminBasicAuth, withUserBasicAuth } from '../middlewares/auth.middleware.js';
 import { withBroadcastingEnabled, withRecordingEnabled } from '../services/global-preferences.service.js';
 import {
 	getRoomPreferences,
@@ -40,7 +40,12 @@ apiRouter.get('/recordings/:recordingId/stream', withRecordingEnabled, recording
 apiRouter.delete('/recordings/:recordingId', withUserBasicAuth, withRecordingEnabled, recordingCtrl.deleteRecording);
 
 apiRouter.get('/admin/recordings', withAdminBasicAuth, withRecordingEnabled, recordingCtrl.getAllRecordings);
-apiRouter.delete('/admin/recordings/:recordingId', withAdminBasicAuth, withRecordingEnabled, recordingCtrl.deleteRecording);
+apiRouter.delete(
+	'/admin/recordings/:recordingId',
+	withAdminBasicAuth,
+	withRecordingEnabled,
+	recordingCtrl.deleteRecording
+);
 
 // Broadcasting Routes
 apiRouter.post('/broadcasts', withUserBasicAuth, withBroadcastingEnabled, broadcastCtrl.startBroadcasting);
