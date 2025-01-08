@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import chalk from 'chalk';
-import { sequelize, sequelizeSync } from './config/sequelize.js';
+import { sequelizeSync } from './config/sequelize.js';
 import { indexHtmlPath, publicFilesPath } from './utils/path-utils.js';
 import { apiRouter, livekitRouter } from './routes/index.js';
 import {
@@ -27,10 +27,11 @@ import {
 	DB_DIALECT,
 	DB_NAME,
 	DB_USER,
-	DB_PASSWORD
+	DB_PASSWORD,
+	CALL_PREFERENCES_STORAGE_MODE
 } from './config.js';
 import { embeddedRouter } from './routes/embedded.routes.js';
-import { GlobalPreferencesService } from './services/global-preferences.service.js';
+import { GlobalPreferencesService } from './services/preferences/index.js';
 
 const createApp = () => {
 	const app = express();
@@ -43,9 +44,6 @@ const createApp = () => {
 	app.use(express.static(publicFilesPath));
 	app.use(express.json());
 
-	// Initialize Sequelize
-	sequelizeSync(GlobalPreferencesService.getInstance());
-
 	// Setup routes
 	app.use('/call/api', apiRouter);
 	app.use('/embedded/api', embeddedRouter);
@@ -53,6 +51,14 @@ const createApp = () => {
 	app.get(/^(?!\/api).*$/, (req: Request, res: Response) => {
 		res.sendFile(indexHtmlPath);
 	});
+
+	if (CALL_PREFERENCES_STORAGE_MODE === 'db') {
+		// Initialize Sequelize
+		sequelizeSync(GlobalPreferencesService.getInstance());
+	} else {
+		// Initialize S3
+		GlobalPreferencesService.getInstance().initializeDefaultPreferences();
+	}
 
 	return app;
 };
@@ -82,6 +88,8 @@ const logEnvVars = () => {
 
 	console.log('CALL ADMIN USER: ', credential('****' + CALL_ADMIN_USER.slice(-3)));
 	console.log('CALL ADMIN PASSWORD: ', credential('****' + CALL_ADMIN_SECRET.slice(-3)));
+	console.log('CALL PREFERENCES STORAGE:', text(CALL_PREFERENCES_STORAGE_MODE));
+
 	console.log('---------------------------------------------------------');
 	console.log('LIVEKIT Configuration');
 	console.log('---------------------------------------------------------');
@@ -98,14 +106,17 @@ const logEnvVars = () => {
 	console.log('CALL S3 SECRET KEY:', credential('****' + CALL_S3_SECRET_KEY.slice(-3)));
 	console.log('CALL AWS REGION:', text(CALL_AWS_REGION));
 	console.log('---------------------------------------------------------');
-	console.log('Sequelize Configuration');
-	console.log('---------------------------------------------------------');
-	console.log('DB NAME:', text(DB_NAME));
-	console.log('BD DIALECT:', text(DB_DIALECT));
-	console.log('DB HOST:', text(DB_HOST));
-	console.log('DB USER:', credential('****' + DB_USER.slice(-3)));
-	console.log('DB PASSWORD:', credential('****' + DB_PASSWORD.slice(-3)));
-	console.log('---------------------------------------------------------');
+
+	if (CALL_PREFERENCES_STORAGE_MODE === 'db') {
+		console.log('Sequelize Configuration');
+		console.log('---------------------------------------------------------');
+		console.log('DB NAME:', text(DB_NAME));
+		console.log('BD DIALECT:', text(DB_DIALECT));
+		console.log('DB HOST:', text(DB_HOST));
+		console.log('DB USER:', credential('****' + DB_USER.slice(-3)));
+		console.log('DB PASSWORD:', credential('****' + DB_PASSWORD.slice(-3)));
+		console.log('---------------------------------------------------------');
+	}
 };
 
 const startServer = (app: express.Application) => {
@@ -123,17 +134,17 @@ const startServer = (app: express.Application) => {
  * @returns {boolean} True if this module is the main entry point, false otherwise.
  */
 const isMainModule = (): boolean => {
-    const importMetaUrl = import.meta.url;
-    let processArgv1 = process.argv[1];
+	const importMetaUrl = import.meta.url;
+	let processArgv1 = process.argv[1];
 
-    if (process.platform === "win32") {
-        processArgv1 = processArgv1.replace(/\\/g, "/");
-        processArgv1 = `file:///${processArgv1}`;
-    } else {
-        processArgv1 = `file://${processArgv1}`;
-    }
+	if (process.platform === 'win32') {
+		processArgv1 = processArgv1.replace(/\\/g, '/');
+		processArgv1 = `file:///${processArgv1}`;
+	} else {
+		processArgv1 = `file://${processArgv1}`;
+	}
 
-    return importMetaUrl === processArgv1;
+	return importMetaUrl === processArgv1;
 };
 
 if (isMainModule()) {

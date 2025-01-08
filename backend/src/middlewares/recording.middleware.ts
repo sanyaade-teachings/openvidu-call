@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { GlobalPreferencesService } from '../services/global-preferences.service.js';
+import { GlobalPreferencesService } from '../services/preferences/index.js';
 import { RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from '../services/logger.service.js';
 
 export const withRecordingEnabled = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const preferences = await GlobalPreferencesService.getInstance().getRoomPreferences();
+		const preferences: RoomPreferences | null = await GlobalPreferencesService.getInstance().getRoomPreferences();
 
 		if (preferences) {
-			const { recordingPreferences } = preferences.value as RoomPreferences;
+			const { recordingPreferences } = preferences;
 
 			if (!recordingPreferences.enabled) {
 				return res.status(403).json({ message: 'Recording is disabled in this room.' });

@@ -3,8 +3,7 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { DB_DIALECT, DB_HOST, DB_NAME, DB_PASSWORD, DB_USER } from '../config.js';
 
 import { LoggerService } from '../services/logger.service.js';
-import { GlobalPreferencesModel } from '../models/global-preferences.model.js';
-import { GlobalPreferencesService } from '../services/global-preferences.service.js';
+import { GlobalPreferencesService, GlobalPreferencesModel } from '../services/preferences/index.js';
 
 const models = [GlobalPreferencesModel];
 const options: SequelizeOptions = {
@@ -21,7 +20,6 @@ sequelize.addModels(models);
 
 const sequelizeSync = async (gpService: GlobalPreferencesService) => {
 	const logger = LoggerService.getInstance();
-
 
 	try {
 		await sequelize.sync();

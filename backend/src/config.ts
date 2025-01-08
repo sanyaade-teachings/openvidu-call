@@ -15,6 +15,9 @@ export const CALL_USER = process.env.CALL_USER || 'user';
 export const CALL_SECRET = process.env.CALL_SECRET || 'user';
 export const CALL_ADMIN_USER = process.env.CALL_ADMIN_USER || 'admin';
 export const CALL_ADMIN_SECRET = process.env.CALL_ADMIN_SECRET || 'admin';
+// Storage mode for global preferences.
+// The default storage mode is set to 's3'
+export const CALL_PREFERENCES_STORAGE_MODE = process.env.CALL_PREFERENCES_STORAGE_MODE || 'db';
 
 /**
  * Log levels configuration: error, warn, info, verbose, debug, silly
@@ -38,8 +41,8 @@ export const CALL_AWS_REGION = process.env.CALL_AWS_REGION || 'us-east-1';
 export const CALL_S3_WITH_PATH_STYLE_ACCESS = process.env.CALL_S3_WITH_PATH_STYLE_ACCESS || 'true';
 
 // Sequelize configuration
+// Database configuration applies only if CALL_PREFERENCES_STORAGE_MODE='s3'
 export const DB_NAME = process.env.DB_NAME || 'openvidu';
-
 // 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle';
 export const DB_DIALECT = process.env.DB_DIALECT || 'mysql';
 export const DB_USER = process.env.DB_USER || 'admin';
