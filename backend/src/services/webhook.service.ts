@@ -66,7 +66,7 @@ export class WebhookService {
 				// Add recording metadata
 				const metadataPath = this.generateMetadataPath(payload);
 				await Promise.all([
-					this.s3Service.uploadObject(metadataPath, payload),
+					this.s3Service.saveObject(metadataPath, payload),
 					this.roomService.sendSignal(roomName, payload, { topic })
 				]);
 
@@ -118,7 +118,7 @@ export class WebhookService {
 				// Update recording metadata
 				const metadataPath = this.generateMetadataPath(payload);
 				await Promise.all([
-					this.s3Service.uploadObject(metadataPath, payload),
+					this.s3Service.saveObject(metadataPath, payload),
 					this.roomService.sendSignal(roomName, payload, { topic })
 				]);
 			} else {

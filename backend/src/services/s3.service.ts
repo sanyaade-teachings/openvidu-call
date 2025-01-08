@@ -85,7 +85,7 @@ export class S3Service {
 	// 	return this.run(command);
 	// }
 
-	async uploadObject(name: string, body: any, bucket: string = CALL_S3_BUCKET): Promise<PutObjectCommandOutput> {
+	async saveObject(name: string, body: any, bucket: string = CALL_S3_BUCKET): Promise<PutObjectCommandOutput> {
 		try {
 			const command = new PutObjectCommand({
 				Bucket: bucket,
