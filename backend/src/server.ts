@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import chalk from 'chalk';
-import { sequelizeSync } from './config/sequelize.js';
 import { indexHtmlPath, publicFilesPath } from './utils/path-utils.js';
 import { apiRouter, livekitRouter } from './routes/index.js';
 import {
@@ -23,11 +22,6 @@ import {
 	CALL_LOG_LEVEL,
 	CALL_NAME_ID,
 	SERVER_CORS_ORIGIN,
-	DB_HOST,
-	DB_DIALECT,
-	DB_NAME,
-	DB_USER,
-	DB_PASSWORD,
 	CALL_PREFERENCES_STORAGE_MODE
 } from './config.js';
 import { embeddedRouter } from './routes/embedded.routes.js';
@@ -52,10 +46,7 @@ const createApp = () => {
 		res.sendFile(indexHtmlPath);
 	});
 
-	if (CALL_PREFERENCES_STORAGE_MODE === 'db') {
-		// Initialize Sequelize
-		sequelizeSync(GlobalPreferencesService.getInstance());
-	} else {
+	if (CALL_PREFERENCES_STORAGE_MODE === 's3') {
 		// Initialize S3
 		GlobalPreferencesService.getInstance().initializeDefaultPreferences();
 	}
@@ -106,17 +97,6 @@ const logEnvVars = () => {
 	console.log('CALL S3 SECRET KEY:', credential('****' + CALL_S3_SECRET_KEY.slice(-3)));
 	console.log('CALL AWS REGION:', text(CALL_AWS_REGION));
 	console.log('---------------------------------------------------------');
-
-	if (CALL_PREFERENCES_STORAGE_MODE === 'db') {
-		console.log('Sequelize Configuration');
-		console.log('---------------------------------------------------------');
-		console.log('DB NAME:', text(DB_NAME));
-		console.log('BD DIALECT:', text(DB_DIALECT));
-		console.log('DB HOST:', text(DB_HOST));
-		console.log('DB USER:', credential('****' + DB_USER.slice(-3)));
-		console.log('DB PASSWORD:', credential('****' + DB_PASSWORD.slice(-3)));
-		console.log('---------------------------------------------------------');
-	}
 };
 
 const startServer = (app: express.Application) => {

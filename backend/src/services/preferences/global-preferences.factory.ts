@@ -4,7 +4,6 @@
  */
 
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
-import { DatabasePreferenceStorage } from './database-preferences-storage.js';
 import { S3PreferenceStorage } from './s3-preferences-storage.js';
 import { CALL_PREFERENCES_STORAGE_MODE } from '../../config.js';
 
@@ -14,6 +13,6 @@ export class GlobalPreferencesStorageFactory {
 			return new S3PreferenceStorage();
 		}
 
-		return new DatabasePreferenceStorage();
+        throw new Error('Invalid preferences storage mode');
 	}
 }
