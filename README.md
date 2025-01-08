@@ -85,20 +85,6 @@ git clone https://github.com/OpenVidu/openvidu-call.git --branch next
 
 ### Backend
 
-#### Prerequisites
-
-You need to start a mysql server before running the backend application. You can use the following docker command to start a mysql server:
-
-```bash
-docker run --name mysql-container \
--e MYSQL_ROOT_PASSWORD=admin \
--e MYSQL_DATABASE=openvidu \
--e MYSQL_USER=admin \
--e MYSQL_PASSWORD=admin \
--p 3306:3306 \
--d mysql:latest
-```
-
 1. Serve the backend application.
 
 ```bash
