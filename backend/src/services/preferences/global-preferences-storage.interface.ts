@@ -1,4 +1,4 @@
-import { RoomPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences } from '@openvidu/call-common-types';
 
 /**
  * Interface for managing global preferences storage.
@@ -7,23 +7,23 @@ export interface GlobalPreferencesStorage {
 	/**
 	 * Initializes the storage with default preferences if they are not already set.
 	 *
-	 * @param defaultPreferences - The default room preferences to initialize with.
+	 * @param defaultPreferences - The default preferences to initialize with.
 	 * @returns A promise that resolves when the initialization is complete.
 	 */
-	initialize(defaultPreferences: RoomPreferences): Promise<void>;
+	initialize(defaultPreferences: GlobalPreferences): Promise<void>;
 
 	/**
-	 * Retrieves the current room preferences.
+	 * Retrieves the current preferences.
 	 *
-	 * @returns A promise that resolves to the current room preferences, or null if not set.
+	 * @returns A promise that resolves to the current preferences, or null if not set.
 	 */
-	getRoomPreferences(): Promise<RoomPreferences | null>;
+	getPreferences(): Promise<GlobalPreferences | null>;
 
 	/**
-	 * Saves the given room preferences.
+	 * Saves the given preferences.
 	 *
-	 * @param preferences - The room preferences to save.
-	 * @returns A promise that resolves to the saved room preferences.
+	 * @param preferences - The preferences to save.
+	 * @returns A promise that resolves to the saved preferences.
 	 */
-	saveRoomPreferences(preferences: RoomPreferences): Promise<RoomPreferences>;
+	savePreferences(preferences: GlobalPreferences): Promise<GlobalPreferences>;
 }

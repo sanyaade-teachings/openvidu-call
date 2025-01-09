@@ -3,7 +3,7 @@
  * regardless of the underlying storage mechanism.
  */
 
-import { RoomPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences, RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from '../logger.service.js';
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
 import { GlobalPreferencesStorageFactory } from './global-preferences.factory.js';
@@ -27,40 +27,71 @@ export class GlobalPreferencesService {
 	}
 
 	/**
-	 * Initializes the default preferences by calling the storage's initialize method.
-	 * This method is asynchronous and should be awaited to ensure that the preferences
-	 * are properly initialized before proceeding.
-	 *
-	 * @returns {Promise<void>} A promise that resolves when the initialization is complete.
+	 * Initializes default preferences if not already initialized.
+	 * @returns {Promise<GlobalPreferences>} Default global preferences.
 	 */
-	async initializeDefaultPreferences(): Promise<void> {
+	async initializeDefaultPreferences(): Promise<GlobalPreferences> {
 		const preferences = this.getDefaultPreferences();
 
 		try {
 			await this.storage.initialize(preferences);
+			return preferences;
 		} catch (error) {
-			if (error instanceof OpenViduCallError) {
-				this.logger.error('Error initializing default preferences' + error.message);
-			} else {
-				this.logger.error('Unexpected error initializing default preferences');
-			}
+			this.handleError(error, 'Error initializing default preferences');
+			throw error;
 		}
 	}
 
-	getRoomPreferences(): Promise<RoomPreferences | null> {
-		return this.storage.getRoomPreferences();
+	/**
+	 * Retrieves the global preferences, initializing them if necessary.
+	 * @returns {Promise<GlobalPreferences>}
+	 */
+	async getGlobalPreferences(): Promise<GlobalPreferences> {
+		const preferences = await this.storage.getPreferences();
+
+		if (preferences) return preferences;
+
+		return await this.initializeDefaultPreferences();
 	}
 
-	async updateRoomPreferences(roomPreferences: RoomPreferences) {
+	/**
+	 * Retrieves room preferences from global preferences.
+	 * @returns {Promise<RoomPreferences>}
+	 */
+	async getRoomPreferences(): Promise<RoomPreferences> {
+		const preferences = await this.getGlobalPreferences();
+		return preferences.roomPreferences;
+	}
+
+	/**
+	 * Updates room preferences in storage.
+	 * @param {RoomPreferences} roomPreferences
+	 * @returns {Promise<GlobalPreferences>}
+	 */
+	async updateRoomPreferences(roomPreferences: RoomPreferences): Promise<GlobalPreferences> {
+		// TODO: Move validation to the controller layer
 		this.validateRoomPreferences(roomPreferences);
-		return this.storage.saveRoomPreferences(roomPreferences);
+
+		const existingPreferences = await this.getGlobalPreferences();
+		existingPreferences.roomPreferences = roomPreferences;
+		return this.storage.savePreferences(existingPreferences);
 	}
 
-	async resetRoomPreferences(): Promise<RoomPreferences> {
+	/**
+	 * Resets room preferences to default values.
+	 * @returns {Promise<GlobalPreferences>}
+	 */
+	async resetRoomPreferences(): Promise<GlobalPreferences> {
 		const preferences = this.getDefaultPreferences();
-		return await this.storage.saveRoomPreferences(preferences);
+		const existingPreferences = await this.getGlobalPreferences();
+		existingPreferences.roomPreferences = preferences.roomPreferences;
+		return this.storage.savePreferences(existingPreferences);
 	}
 
+	/**
+	 * Validates the room preferences.
+	 * @param {RoomPreferences} preferences
+	 */
 	validateRoomPreferences(preferences: RoomPreferences) {
 		const { recordingPreferences, broadcastingPreferences, chatPreferences, virtualBackgroundPreferences } =
 			preferences;
@@ -86,12 +117,32 @@ export class GlobalPreferencesService {
 		}
 	}
 
-	protected getDefaultPreferences(): RoomPreferences {
+	/**
+	 * Returns the default global preferences.
+	 * @returns {GlobalPreferences}
+	 */
+	protected getDefaultPreferences(): GlobalPreferences {
 		return {
-			recordingPreferences: { enabled: true },
-			broadcastingPreferences: { enabled: true },
-			chatPreferences: { enabled: true },
-			virtualBackgroundPreferences: { enabled: true }
+			roomPreferences: {
+				recordingPreferences: { enabled: true },
+				broadcastingPreferences: { enabled: true },
+				chatPreferences: { enabled: true },
+				virtualBackgroundPreferences: { enabled: true }
+			},
+			appearancePreferences: {}
 		};
+	}
+
+	/**
+	 * Handles errors and logs them.
+	 * @param {any} error
+	 * @param {string} message
+	 */
+	protected handleError(error: any, message: string) {
+		if (error instanceof OpenViduCallError) {
+			this.logger.error(`${message}: ${error.message}`);
+		} else {
+			this.logger.error(`${message}: Unexpected error`);
+		}
 	}
 }
