@@ -9,7 +9,7 @@ if (process.env.CALL_CONFIG_DIR) {
 // General server configuration
 export const SERVER_PORT = process.env.SERVER_PORT || 6080;
 export const SERVER_CORS_ORIGIN = process.env.SERVER_CORS_ORIGIN || '*';
-export const CALL_NAME_ID = process.env.CALL_NAME_ID || 'OpenViduCall';
+export const CALL_NAME_ID = process.env.CALL_NAME_ID || 'openviduCall';
 export const CALL_PRIVATE_ACCESS = process.env.CALL_PRIVATE_ACCESS || 'false';
 export const CALL_USER = process.env.CALL_USER || 'user';
 export const CALL_SECRET = process.env.CALL_SECRET || 'user';
@@ -37,3 +37,32 @@ export const CALL_S3_ACCESS_KEY = process.env.CALL_S3_ACCESS_KEY || 'minioadmin'
 export const CALL_S3_SECRET_KEY = process.env.CALL_S3_SECRET_KEY || 'minioadmin';
 export const CALL_AWS_REGION = process.env.CALL_AWS_REGION || 'us-east-1';
 export const CALL_S3_WITH_PATH_STYLE_ACCESS = process.env.CALL_S3_WITH_PATH_STYLE_ACCESS || 'true';
+
+// Redis configuration
+export const REDIS_HOST = process.env.CALL_REDIS_HOST || 'localhost';
+export const REDIS_PORT = process.env.CALL_REDIS_PORT || 6379;
+export const REDIS_USERNAME = process.env.CALL_REDIS_USERNAME || '';
+export const REDIS_PASSWORD = process.env.CALL_REDIS_PASSWORD || 'redispassword';
+export const REDIS_DB = process.env.CALL_REDIS_DB || 0;
+
+// Redis configuration Sentinel
+export const REDIS_SENTINEL_HOST_LIST = process.env.CALL_REDIS_SENTINEL_HOST_LIST || '';
+export const REDIS_SENTINEL_PASSWORD = process.env.CALL_REDIS_SENTINEL_PASSWORD || '';
+export const REDIS_SENTINEL_MASTER_NAME = process.env.CALL_REDIS_SENTINEL_MASTER_NAME || 'openvidu';
+
+// Deployment related configuration
+export const MODULES_FILE = process.env.MODULES_FILE || undefined;
+export const MODULE_NAME = process.env.MODULE_NAME || 'openviduCall';
+export const ENABLED_MODULES = process.env.ENABLED_MODULES || '';
+
+export function checkModuleEnabled() {
+	if (MODULES_FILE) {
+		const moduleName = MODULE_NAME;
+		const enabledModules = ENABLED_MODULES.split(',').map((module) => module.trim());
+
+		if (!enabledModules.includes(moduleName)) {
+			console.error(`Module ${moduleName} is not enabled`);
+			process.exit(0);
+		}
+	}
+}

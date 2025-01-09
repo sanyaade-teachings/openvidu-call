@@ -22,10 +22,14 @@ import {
 	CALL_LOG_LEVEL,
 	CALL_NAME_ID,
 	SERVER_CORS_ORIGIN,
-	CALL_PREFERENCES_STORAGE_MODE
+	CALL_PREFERENCES_STORAGE_MODE,
+	REDIS_HOST,
+	REDIS_PORT,
+	REDIS_USERNAME,
+	REDIS_PASSWORD,
+	REDIS_SENTINEL_HOST_LIST
 } from './config.js';
 import { embeddedRouter } from './routes/embedded.routes.js';
-import { GlobalPreferencesService } from './services/preferences/index.js';
 
 const createApp = () => {
 	const app = express();
@@ -45,11 +49,6 @@ const createApp = () => {
 	app.get(/^(?!\/api).*$/, (req: Request, res: Response) => {
 		res.sendFile(indexHtmlPath);
 	});
-
-	if (CALL_PREFERENCES_STORAGE_MODE === 's3') {
-		// Initialize S3
-		GlobalPreferencesService.getInstance().initializeDefaultPreferences();
-	}
 
 	return app;
 };
@@ -97,6 +96,17 @@ const logEnvVars = () => {
 	console.log('CALL S3 SECRET KEY:', credential('****' + CALL_S3_SECRET_KEY.slice(-3)));
 	console.log('CALL AWS REGION:', text(CALL_AWS_REGION));
 	console.log('---------------------------------------------------------');
+	console.log('Redis Configuration');
+	console.log('---------------------------------------------------------');
+	console.log(' REDIS HOST:', text(REDIS_HOST));
+	console.log(' REDIS PORT:', text(REDIS_PORT));
+	console.log(' REDIS USERNAME:', credential('****' + REDIS_USERNAME.slice(-3)));
+	console.log(' REDIS PASSWORD:', credential('****' + REDIS_PASSWORD.slice(-3)));
+
+	if (REDIS_SENTINEL_HOST_LIST !== '') {
+		console.log('REDIS SENTINEL IS ENABLED');
+		console.log(' REDIS SENTINEL HOST LIST:', text(REDIS_SENTINEL_HOST_LIST));
+	}
 };
 
 const startServer = (app: express.Application) => {

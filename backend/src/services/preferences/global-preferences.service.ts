@@ -7,6 +7,7 @@ import { RoomPreferences } from '@openvidu/call-common-types';
 import { LoggerService } from '../logger.service.js';
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
 import { GlobalPreferencesStorageFactory } from './global-preferences.factory.js';
+import { OpenViduCallError } from '../../models/error.model.js';
 
 export class GlobalPreferencesService {
 	protected logger = LoggerService.getInstance();
@@ -14,6 +15,7 @@ export class GlobalPreferencesService {
 	protected storage: GlobalPreferencesStorage;
 	protected constructor() {
 		this.storage = GlobalPreferencesStorageFactory.create();
+		this.initializeDefaultPreferences();
 	}
 
 	static getInstance() {
@@ -32,7 +34,17 @@ export class GlobalPreferencesService {
 	 * @returns {Promise<void>} A promise that resolves when the initialization is complete.
 	 */
 	async initializeDefaultPreferences(): Promise<void> {
-		await this.storage.initialize();
+		const preferences = this.getDefaultPreferences();
+
+		try {
+			await this.storage.initialize(preferences);
+		} catch (error) {
+			if (error instanceof OpenViduCallError) {
+				this.logger.error('Error initializing default preferences' + error.message);
+			} else {
+				this.logger.error('Unexpected error initializing default preferences');
+			}
+		}
 	}
 
 	getRoomPreferences(): Promise<RoomPreferences | null> {
@@ -41,11 +53,12 @@ export class GlobalPreferencesService {
 
 	async updateRoomPreferences(roomPreferences: RoomPreferences) {
 		this.validateRoomPreferences(roomPreferences);
-		return this.storage.updateRoomPreferences(roomPreferences);
+		return this.storage.saveRoomPreferences(roomPreferences);
 	}
 
-	async deleteRoomPreferences(): Promise<{message: string}> {
-		return this.storage.deleteRoomPreferences();
+	async resetRoomPreferences(): Promise<RoomPreferences> {
+		const preferences = this.getDefaultPreferences();
+		return await this.storage.saveRoomPreferences(preferences);
 	}
 
 	validateRoomPreferences(preferences: RoomPreferences) {
@@ -71,5 +84,14 @@ export class GlobalPreferencesService {
 		if (typeof preferences.virtualBackgroundPreferences.enabled !== 'boolean') {
 			throw new Error('Invalid value for virtualBackgroundPreferences.enabled');
 		}
+	}
+
+	protected getDefaultPreferences(): RoomPreferences {
+		return {
+			recordingPreferences: { enabled: true },
+			broadcastingPreferences: { enabled: true },
+			chatPreferences: { enabled: true },
+			virtualBackgroundPreferences: { enabled: true }
+		};
 	}
 }
