@@ -1,0 +1,22 @@
+{
+	"name": "@types/openvidu-call",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"files": [
+		"./dist/**",
+		"./package.json"
+	],
+	"scripts": {
+		"build": "tsc",
+		"serve": "tsc -w",
+		"package": "npm run build && npm pack",
+		"sync-ce": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --save-dev --prefix ../frontend && npm install ../backend/$PACKAGE --save-dev --prefix ../backend",
+		"sync-pro": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../../openvidu-call-pro/frontend && cp $PACKAGE ../../openvidu-call-pro/backend",
+		"sync": "npm run sync-ce && npm run sync-pro"
+	},
+	"devDependencies": {
+		"typescript": "^5.6.3"
+	}
+}

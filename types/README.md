@@ -1,4 +1,4 @@
-# Common-types
+# @types/openvidu-call
 
 This library contains common types used by the OpenVidu Call application. It is a shared library that is used by both the frontend and backend of the application.
 
