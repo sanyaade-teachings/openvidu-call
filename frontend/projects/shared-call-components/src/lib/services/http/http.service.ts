@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GlobalPreferences, RoomPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences, RoomPreferences } from 'openvidu-call';
 import { RecordingInfo } from 'openvidu-components-angular';
 import { lastValueFrom } from 'rxjs';
 
@@ -35,7 +35,6 @@ export class HttpService {
 		return this.getRequest(`${this.pathPrefix}/preferences/room`, headers);
 	}
 
-
 	/**
 	 * Saves the room preferences.
 	 *
@@ -46,7 +45,6 @@ export class HttpService {
 		const headers = this.generateUserHeaders();
 		return this.putRequest(`${this.pathPrefix}/preferences/room`, preferences, headers);
 	}
-
 
 	async getConfig() {
 		return this.getRequest(`${this.pathPrefix}/config`);

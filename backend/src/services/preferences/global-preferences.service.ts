@@ -3,7 +3,7 @@
  * regardless of the underlying storage mechanism.
  */
 
-import { GlobalPreferences, RoomPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences, RoomPreferences } from 'openvidu-call';
 import { LoggerService } from '../logger.service.js';
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
 import { GlobalPreferencesStorageFactory } from './global-preferences.factory.js';

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { GlobalPreferencesService } from '../services/preferences/index.js';
-import { RoomPreferences } from '@openvidu/call-common-types';
+import { RoomPreferences } from 'openvidu-call';
 import { LoggerService } from '../services/logger.service.js';
 
 export const withRecordingEnabled = async (req: Request, res: Response, next: NextFunction) => {

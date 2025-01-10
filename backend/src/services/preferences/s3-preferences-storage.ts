@@ -3,7 +3,7 @@
  * This is used when the application is configured to operate in "s3" mode.
  */
 
-import { GlobalPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences } from 'openvidu-call';
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
 import { S3Service } from '../s3.service.js';
 import { LoggerService } from '../logger.service.js';

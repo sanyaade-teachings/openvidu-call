@@ -28,7 +28,7 @@
 			// "@pages/*": ["src/app/pages/*"],
 			"@environment/*": ["src/environments/*"],
 			"shared-call-components": ["dist/shared-call-components"],
-			"@openvidu/call-common-types": ["../common-types/dist"]
+			"@types/openvidu-call": ["../types/dist"]
 		},
 		"importHelpers": true,
 		"target": "ES2022",

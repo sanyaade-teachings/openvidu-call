@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CALL_PRIVATE_ACCESS } from '../../config.js';
 import { LoggerService } from '../../services/logger.service.js';
-import { GlobalPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences } from 'openvidu-call';
 
 const logger = LoggerService.getInstance();
 

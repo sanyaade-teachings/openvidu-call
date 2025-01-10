@@ -1,4 +1,4 @@
-import { GlobalPreferences } from '@openvidu/call-common-types';
+import { GlobalPreferences } from 'openvidu-call';
 
 /**
  * Interface for managing global preferences storage.
