@@ -12,7 +12,7 @@
 		"build": "tsc",
 		"serve": "tsc -w",
 		"package": "npm run build && npm pack",
-		"sync-ce": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend && npm install ../frontend/$PACKAGE --save-dev --prefix ../frontend && npm install ../backend/$PACKAGE --save-dev --prefix ../backend",
+		"sync-ce": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend",
 		"sync-pro": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../../openvidu-call-pro/frontend && cp $PACKAGE ../../openvidu-call-pro/backend",
 		"sync": "npm run sync-ce && npm run sync-pro"
 	},
