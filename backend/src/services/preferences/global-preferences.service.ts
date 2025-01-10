@@ -8,14 +8,14 @@ import { LoggerService } from '../logger.service.js';
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
 import { GlobalPreferencesStorageFactory } from './global-preferences.factory.js';
 import { OpenViduCallError } from '../../models/error.model.js';
+import { CALL_NAME_ID } from '../../config.js';
 
-export class GlobalPreferencesService {
+export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPreferences> {
 	protected logger = LoggerService.getInstance();
 	protected static instance: GlobalPreferencesService;
 	protected storage: GlobalPreferencesStorage;
 	protected constructor() {
 		this.storage = GlobalPreferencesStorageFactory.create();
-		this.initializeDefaultPreferences();
 	}
 
 	static getInstance() {
@@ -28,14 +28,14 @@ export class GlobalPreferencesService {
 
 	/**
 	 * Initializes default preferences if not already initialized.
-	 * @returns {Promise<GlobalPreferences>} Default global preferences.
+	 * @returns {Promise<T>} Default global preferences.
 	 */
-	async initializeDefaultPreferences(): Promise<GlobalPreferences> {
+	async ensurePreferencesInitialized(): Promise<T> {
 		const preferences = this.getDefaultPreferences();
 
 		try {
 			await this.storage.initialize(preferences);
-			return preferences;
+			return preferences as T;
 		} catch (error) {
 			this.handleError(error, 'Error initializing default preferences');
 			throw error;
@@ -46,12 +46,12 @@ export class GlobalPreferencesService {
 	 * Retrieves the global preferences, initializing them if necessary.
 	 * @returns {Promise<GlobalPreferences>}
 	 */
-	async getGlobalPreferences(): Promise<GlobalPreferences> {
+	async getGlobalPreferences(): Promise<T> {
 		const preferences = await this.storage.getPreferences();
 
-		if (preferences) return preferences;
+		if (preferences) return preferences as T;
 
-		return await this.initializeDefaultPreferences();
+		return await this.ensurePreferencesInitialized();
 	}
 
 	/**
@@ -68,13 +68,13 @@ export class GlobalPreferencesService {
 	 * @param {RoomPreferences} roomPreferences
 	 * @returns {Promise<GlobalPreferences>}
 	 */
-	async updateRoomPreferences(roomPreferences: RoomPreferences): Promise<GlobalPreferences> {
+	async updateRoomPreferences(roomPreferences: RoomPreferences): Promise<T> {
 		// TODO: Move validation to the controller layer
 		this.validateRoomPreferences(roomPreferences);
 
 		const existingPreferences = await this.getGlobalPreferences();
 		existingPreferences.roomPreferences = roomPreferences;
-		return this.storage.savePreferences(existingPreferences);
+		return this.storage.savePreferences(existingPreferences) as Promise<T>;
 	}
 
 	/**
@@ -119,18 +119,18 @@ export class GlobalPreferencesService {
 
 	/**
 	 * Returns the default global preferences.
-	 * @returns {GlobalPreferences}
+	 * @returns {T}
 	 */
-	protected getDefaultPreferences(): GlobalPreferences {
+	protected getDefaultPreferences(): T {
 		return {
+			projectId: CALL_NAME_ID,
 			roomPreferences: {
 				recordingPreferences: { enabled: true },
 				broadcastingPreferences: { enabled: true },
 				chatPreferences: { enabled: true },
 				virtualBackgroundPreferences: { enabled: true }
-			},
-			appearancePreferences: {}
-		};
+			}
+		} as T;
 	}
 
 	/**

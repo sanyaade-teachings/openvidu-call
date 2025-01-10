@@ -30,6 +30,7 @@ import {
 	REDIS_SENTINEL_HOST_LIST
 } from './config.js';
 import { embeddedRouter } from './routes/embedded.routes.js';
+import { GlobalPreferencesService } from './services/index.js';
 
 const createApp = () => {
 	const app = express();
@@ -98,15 +99,18 @@ const logEnvVars = () => {
 	console.log('---------------------------------------------------------');
 	console.log('Redis Configuration');
 	console.log('---------------------------------------------------------');
-	console.log(' REDIS HOST:', text(REDIS_HOST));
-	console.log(' REDIS PORT:', text(REDIS_PORT));
-	console.log(' REDIS USERNAME:', credential('****' + REDIS_USERNAME.slice(-3)));
-	console.log(' REDIS PASSWORD:', credential('****' + REDIS_PASSWORD.slice(-3)));
+	console.log('REDIS HOST:', text(REDIS_HOST));
+	console.log('REDIS PORT:', text(REDIS_PORT));
+	console.log('REDIS USERNAME:', credential('****' + REDIS_USERNAME.slice(-3)));
+	console.log('REDIS PASSWORD:', credential('****' + REDIS_PASSWORD.slice(-3)));
 
 	if (REDIS_SENTINEL_HOST_LIST !== '') {
 		console.log('REDIS SENTINEL IS ENABLED');
-		console.log(' REDIS SENTINEL HOST LIST:', text(REDIS_SENTINEL_HOST_LIST));
+		console.log('REDIS SENTINEL HOST LIST:', text(REDIS_SENTINEL_HOST_LIST));
 	}
+
+	console.log('---------------------------------------------------------');
+	console.log(' ');
 };
 
 const startServer = (app: express.Application) => {
@@ -116,6 +120,7 @@ const startServer = (app: express.Application) => {
 		console.log(' ');
 		console.log('OpenVidu Call Server is listening on port', chalk.cyanBright(SERVER_PORT));
 		logEnvVars();
+		GlobalPreferencesService.getInstance().ensurePreferencesInitialized();
 	});
 };
 
