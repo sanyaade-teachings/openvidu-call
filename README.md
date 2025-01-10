@@ -68,10 +68,10 @@ The OpenVidu Call application is composed of two main parts (frontend and backen
   Also, the frontend project installs external dependencies on the following libraries:
 
   - [**openvidu-components-angular**](https://github.com/OpenVidu/openvidu/tree/master/openvidu-components-angular): A library of Angular components that provide the core functionality of the video conferencing service.
-  - [**common-types**](https://github.com/OpenVidu/openvidu-call/tree/next/common-types): A library of common types used by the frontend and backend.
+  - [**@types/openvidu-call**](https://github.com/OpenVidu/openvidu-call/tree/next/types): A library of common types used by the frontend and backend.
 
 - **Backend**: The backend is a Node.js application.
-  - [**common-types**](https://github.com/OpenVidu/openvidu-call/tree/next/common-types): A library of common types used by the frontend and backend.
+  - [**@types/openvidu-call**](https://github.com/OpenVidu/openvidu-call/tree/next/types): A library of common types used by the frontend and backend.
 
 ## Development
 
@@ -83,46 +83,63 @@ Clone the OpenVidu Call repository:
 git clone https://github.com/OpenVidu/openvidu-call.git --branch next
 ```
 
+### Prepare the project
+
+For building types and install dependencies, run the following command:
+
+```bash
+cd openvidu-call
+./prepare.sh
+```
+
 ### Backend
 
 1. Serve the backend application.
 
 ```bash
-cd openvidu-call/backend && \
-npm install && npm run dev:start
+cd backend && \
+npm run dev:start
 ```
 
 ### Frontend
 
-1. Build the **common-types** library.
+Opening a new tab, under root directory:
+
+1. Serve the frontend application.
 
 ```bash
-cd openvidu-call/common-types && \
-npm install && npm run sync-ce
-```
-
-> NOTE: If you plan to make changes to the **common-types** library, the best idea is serve it locally. To do this, follow the instructions below:
-
-```bash
-npm run serve
-```
-
-2. Serve the **shared-call-components** library.
-
-```bash
-cd ../frontend && \
-npm install && npm run lib:serve
-```
-
-3. Serve the frontend application.
-
-**Opening another terminal**:
-
-```bash
+cd frontend && \
 npm run dev:start
 ```
 
 After running these commands, you can access the frontend application at [http://localhost:5080](http://localhost:5080).
+
+---
+
+> [!NOTE]
+> As the frontend project uses **shared-call-components** and **@types/openvidu-call** libraries, you could need make changes to these libraries when developing and have the changes reflected in the frontend application. To do this, follow the instructions below:
+
+- Stop the backend and frontend processes.
+
+- Serve the **common-types** library.
+
+```bash
+cd types && \
+npm run serve
+```
+
+> This command will make your terminal busy, so you need to open a new terminal to continue with the next steps.
+
+- Serve the **shared-call-components** library.
+
+```bash
+cd frontend && \
+npm run lib:serve
+```
+
+> This command will make your terminal busy, so you need to open a new terminal to continue with the next steps.
+
+- Serve the backend and frontend applications again.
 
 
 ## Build (with docker)
