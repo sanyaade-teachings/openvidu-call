@@ -27,8 +27,8 @@ import { Readable } from 'stream';
 import { LoggerService } from './logger.service.js';
 
 export class S3Service {
-	private s3: S3Client;
-	private logger = LoggerService.getInstance();
+	protected s3: S3Client;
+	protected logger = LoggerService.getInstance();
 	protected static instance: S3Service;
 
 	constructor() {
@@ -267,7 +267,7 @@ export class S3Service {
 		return await this.run(command);
 	}
 
-	private async run(command: any) {
+	protected async run(command: any) {
 		return this.s3.send(command);
 	}
 }
