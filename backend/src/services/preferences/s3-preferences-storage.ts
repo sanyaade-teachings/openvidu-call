@@ -36,11 +36,11 @@ export class S3PreferenceStorage<T extends GlobalPreferences = GlobalPreferences
 
 	async getPreferences(): Promise<T | null> {
 		try {
-			// Try fetching preferences from Redis
 			let preferences: T | null = await this.getFromRedis(this.PREFERENCES_KEY);
 
 			if (!preferences) {
 				// Fallback to fetching from S3 if Redis doesn't have it
+				this.logger.verbose('Preferences not found in Redis. Fetching from S3...');
 				preferences = await this.getFromS3(`${this.PREFERENCES_PATH}/${this.PREFERENCES_KEY}.json`);
 
 				if (preferences) {
@@ -74,11 +74,10 @@ export class S3PreferenceStorage<T extends GlobalPreferences = GlobalPreferences
 	protected async getFromRedis(key: string): Promise<T | null> {
 		let preferencesCache: string | null = null;
 
-		// Try to get preferences from Redis
 		preferencesCache = await this.redisService.get(key);
 
 		if (preferencesCache) {
-			// Parse and return preferences if found in Redis
+			this.logger.verbose(`Object ${key} found in Redis`);
 			return JSON.parse(preferencesCache) as T;
 		}
 
@@ -86,10 +85,10 @@ export class S3PreferenceStorage<T extends GlobalPreferences = GlobalPreferences
 	}
 
 	protected async getFromS3(path: string): Promise<T | null> {
-		// If Redis didn't have the preferences, try fetching from S3
 		const preferences = await this.s3Service.getObjectAsJson(path);
 
 		if (preferences) {
+			this.logger.verbose(`Preferences found in S3 at path: ${path}`);
 			return preferences as T;
 		}
 
