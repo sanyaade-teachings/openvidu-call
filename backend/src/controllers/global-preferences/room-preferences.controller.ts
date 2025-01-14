@@ -4,13 +4,13 @@ import { GlobalPreferencesService } from '../../services/preferences/index.js';
 import { OpenViduCallError } from '../../models/error.model.js';
 
 const logger = LoggerService.getInstance();
-const preferenceService = GlobalPreferencesService.getInstance();
 
 export const updateRoomPreferences = async (req: Request, res: Response) => {
 	logger.verbose(`Updating room preferences: ${JSON.stringify(req.body)}`);
 	const roomPreferences = req.body;
 
 	try {
+		const preferenceService = GlobalPreferencesService.getInstance();
 		preferenceService.validateRoomPreferences(roomPreferences);
 
 		const savedPreferences = await preferenceService.updateRoomPreferences(roomPreferences);
@@ -31,6 +31,7 @@ export const updateRoomPreferences = async (req: Request, res: Response) => {
 
 export const getRoomPreferences = async (req: Request, res: Response) => {
 	try {
+		const preferenceService = GlobalPreferencesService.getInstance();
 		const preferences = await preferenceService.getRoomPreferences();
 
 		if (!preferences) {

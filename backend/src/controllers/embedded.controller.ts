@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { LoggerService } from '../services/logger.service.js';
 import { LiveKitService } from '../services/livekit.service.js';
-import { TokenOptions } from 'openvidu-call';
+import { TokenOptions } from '@typings-ce';
 
 const logger = LoggerService.getInstance();
 const livekitService = LiveKitService.getInstance();

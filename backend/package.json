@@ -26,8 +26,8 @@
 		"dev:start": "cross-env USE_HTTPS=false SERVER_CORS_ORIGIN=* nodemon -I --exec node --experimental-specifier-resolution=node --loader ts-node/esm ./src/server.ts",
 		"lint": "eslint src --fix",
 		"format": "prettier --ignore-path .gitignore --write '**/*.{ts,js,json,md}'",
-		"pack": "npm pack",
-		"dev:sync-call-pro": "npm run build && npm run pack && cp openvidu-call-server-**.tgz ../../openvidu-call-pro/backend && cd ../../openvidu-call-pro/backend && npm install openvidu-call-server-**.tgz "
+		"package": "npm run build && npm pack",
+		"lib:sync-call-pro": "npm run package && cp openvidu-call-server-*.tgz ../../openvidu-call-pro/backend"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "3.673.0",
@@ -51,7 +51,6 @@
 		"@types/cors": "2.8.17",
 		"@types/express": "4.17.21",
 		"@types/node": "^20.12.14",
-		"@types/openvidu-call": "file:types-openvidu-call-1.0.0.tgz",
 		"@types/swagger-jsdoc": "^6.0.4",
 		"@types/swagger-ui-express": "^4.1.6",
 		"@types/validator": "^13.12.2",
@@ -65,8 +64,5 @@
 		"prettier": "3.3.3",
 		"ts-node": "10.9.2",
 		"typescript": "5.4.5"
-	},
-	"peerDependencies": {
-		"@types/openvidu-call": "file:types-openvidu-call-1.0.0.tgz"
 	}
 }

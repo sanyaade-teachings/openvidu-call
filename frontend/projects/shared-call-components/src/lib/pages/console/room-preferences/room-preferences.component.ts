@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalPreferencesService, NotificationService } from '../../../services';
 import { DynamicGridComponent, ToggleCardComponent } from '../../../components';
-import { RoomPreferences } from 'openvidu-call';
+import { RoomPreferences } from '@typings-ce';
 
 @Component({
 	selector: 'ov-room-preferences',

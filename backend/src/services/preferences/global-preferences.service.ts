@@ -3,7 +3,7 @@
  * regardless of the underlying storage mechanism.
  */
 
-import { GlobalPreferences, RoomPreferences } from 'openvidu-call';
+import { GlobalPreferences, RoomPreferences } from '@typings-ce';
 import { LoggerService } from '../logger.service.js';
 import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
 import { GlobalPreferencesStorageFactory } from './global-preferences.factory.js';
@@ -16,6 +16,7 @@ export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPrefer
 	protected storage: GlobalPreferencesStorage;
 	protected constructor() {
 		this.storage = GlobalPreferencesStorageFactory.create();
+		console.log('00000000000000000000 GlobalPreferencesService created');
 	}
 
 	static getInstance() {
@@ -24,6 +25,10 @@ export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPrefer
 		}
 
 		return GlobalPreferencesService.instance;
+	}
+
+	static setInstance(instance: GlobalPreferencesService) {
+		GlobalPreferencesService.instance = instance;
 	}
 
 	/**
@@ -79,13 +84,13 @@ export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPrefer
 
 	/**
 	 * Resets room preferences to default values.
-	 * @returns {Promise<GlobalPreferences>}
+	 * @returns {Promise<T>}
 	 */
-	async resetRoomPreferences(): Promise<GlobalPreferences> {
+	async resetRoomPreferences(): Promise<T> {
 		const preferences = this.getDefaultPreferences();
 		const existingPreferences = await this.getGlobalPreferences();
 		existingPreferences.roomPreferences = preferences.roomPreferences;
-		return this.storage.savePreferences(existingPreferences);
+		return this.storage.savePreferences(existingPreferences) as Promise<T>;
 	}
 
 	/**
@@ -119,9 +124,9 @@ export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPrefer
 
 	/**
 	 * Returns the default global preferences.
-	 * @returns {T}
+	 * @returns {GlobalPreferences}
 	 */
-	protected getDefaultPreferences(): T {
+	protected getDefaultPreferences(): GlobalPreferences {
 		return {
 			projectId: CALL_NAME_ID,
 			roomPreferences: {
@@ -130,7 +135,7 @@ export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPrefer
 				chatPreferences: { enabled: true },
 				virtualBackgroundPreferences: { enabled: true }
 			}
-		} as T;
+		};
 	}
 
 	/**

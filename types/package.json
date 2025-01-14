@@ -11,10 +11,9 @@
 	"scripts": {
 		"build": "tsc",
 		"serve": "tsc -w",
-		"package": "npm run build && npm pack",
-		"sync-ce": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../frontend && cp $PACKAGE ../backend",
-		"sync-pro": "npm run package && PACKAGE=$(ls types-openvidu-call-*.tgz) && cp $PACKAGE ../../openvidu-call-pro/frontend && cp $PACKAGE ../../openvidu-call-pro/backend",
-		"sync": "npm run sync-ce && npm run sync-pro"
+		"sync-ce": "./sync-types.sh ce",
+		"sync-pro": "./sync-types.sh pro",
+		"sync": "./sync-types.sh"
 	},
 	"devDependencies": {
 		"typescript": "^5.6.3"

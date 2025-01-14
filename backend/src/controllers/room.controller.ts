@@ -3,7 +3,7 @@ import { LiveKitService } from '../services/livekit.service.js';
 import { LoggerService } from '../services/logger.service.js';
 import { OpenViduCallError } from '../models/error.model.js';
 import { RoomService } from '../services/room.service.js';
-import { TokenOptions } from 'openvidu-call';
+import { TokenOptions } from '@typings-ce';
 
 const livekitService = LiveKitService.getInstance();
 const roomService = RoomService.getInstance();

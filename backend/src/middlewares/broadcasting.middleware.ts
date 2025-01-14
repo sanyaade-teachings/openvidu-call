@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { GlobalPreferencesService } from '../services/preferences/index.js';
-import { RoomPreferences } from 'openvidu-call';
+import { RoomPreferences } from '@typings-ce';
 import { LoggerService } from '../services/logger.service.js';
 
 export const withBroadcastingEnabled = async (req: Request, res: Response, next: NextFunction) => {

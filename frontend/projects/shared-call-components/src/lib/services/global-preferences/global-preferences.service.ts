@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RoomPreferences } from 'openvidu-call';
+import { RoomPreferences } from '@typings-ce';
 import { LoggerService } from 'openvidu-components-angular';
 import { HttpService } from '../http/http.service';
 

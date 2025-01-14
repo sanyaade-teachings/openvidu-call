@@ -9,6 +9,7 @@ cd ..
 # Build backend
 cd backend
 npm install
+npm run build
 cd ..
 
 # Build frontend

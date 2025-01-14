@@ -16,7 +16,7 @@ import {
 	ChatPreferences,
 	RecordingPreferences,
 	VirtualBackgroundPreferences
-} from 'openvidu-call';
+} from '@typings-ce';
 import { HttpService, ContextService, GlobalPreferencesService } from '../../services';
 
 @Component({

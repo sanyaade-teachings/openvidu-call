@@ -1,4 +1,4 @@
-import { GlobalPreferences } from 'openvidu-call';
+import { GlobalPreferences } from '@typings-ce';
 
 /**
  * Interface for managing global preferences storage.

@@ -14,7 +14,7 @@ import {
 import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL, LIVEKIT_URL_PRIVATE } from '../config.js';
 import { LoggerService } from './logger.service.js';
 import { errorLivekitIsNotAvailable, errorParticipantAlreadyExists, internalError } from '../models/error.model.js';
-import { TokenOptions } from 'openvidu-call';
+import { TokenOptions } from '@typings-ce';
 
 export class LiveKitService {
 	protected static instance: LiveKitService;

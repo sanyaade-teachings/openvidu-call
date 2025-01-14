@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GlobalPreferences, RoomPreferences } from 'openvidu-call';
+import { GlobalPreferences, RoomPreferences } from '@typings-ce';
 import { RecordingInfo } from 'openvidu-components-angular';
 import { lastValueFrom } from 'rxjs';
 

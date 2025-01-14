@@ -1,3 +1,3 @@
-export * from './types/global-preferences.js';
-export * from './types/room-preferences.js';
-export * from './types/token.js';
+export * from './global-preferences.js';
+export * from './room-preferences.js';
+export * from './token.js';
