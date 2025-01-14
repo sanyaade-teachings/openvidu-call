@@ -16,7 +16,6 @@ export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPrefer
 	protected storage: GlobalPreferencesStorage;
 	protected constructor() {
 		this.storage = GlobalPreferencesStorageFactory.create();
-		console.log('00000000000000000000 GlobalPreferencesService created');
 	}
 
 	static getInstance() {
