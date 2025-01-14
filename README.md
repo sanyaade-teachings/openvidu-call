@@ -114,33 +114,6 @@ npm run dev:start
 
 After running these commands, you can access the frontend application at [http://localhost:5080](http://localhost:5080).
 
----
-
-> [!NOTE]
-> As the frontend project uses **shared-call-components** and **@types/openvidu-call** libraries, you could need make changes to these libraries when developing and have the changes reflected in the frontend application. To do this, follow the instructions below:
-
-- Stop the backend and frontend processes.
-
-- Serve the **common-types** library.
-
-```bash
-cd types && \
-npm run serve
-```
-
-> This command will make your terminal busy, so you need to open a new terminal to continue with the next steps.
-
-- Serve the **shared-call-components** library.
-
-```bash
-cd frontend && \
-npm run lib:serve
-```
-
-> This command will make your terminal busy, so you need to open a new terminal to continue with the next steps.
-
-- Serve the backend and frontend applications again.
-
 
 ## Build (with docker)
 
