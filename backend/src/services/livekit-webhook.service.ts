@@ -13,8 +13,8 @@ import { RoomStatusData } from '../models/room.model.js';
 import { BroadcastingService } from './broadcasting.service.js';
 import { RecordingService } from './recording.service.js';
 
-export class WebhookService {
-	private static instance: WebhookService;
+export class LivekitWebhookService {
+	private static instance: LivekitWebhookService;
 	private livekitService = LiveKitService.getInstance();
 	private s3Service = S3Service.getInstance();
 	private roomService = RoomService.getInstance();
@@ -28,12 +28,12 @@ export class WebhookService {
 		this.webhookReceiver = new WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
 	}
 
-	static getInstance(): WebhookService {
-		if (!WebhookService.instance) {
-			WebhookService.instance = new WebhookService();
+	static getInstance(): LivekitWebhookService {
+		if (!LivekitWebhookService.instance) {
+			LivekitWebhookService.instance = new LivekitWebhookService();
 		}
 
-		return WebhookService.instance;
+		return LivekitWebhookService.instance;
 	}
 
 	/**
@@ -152,7 +152,7 @@ export class WebhookService {
 	}
 
 	private async sendStatusSignal(roomName: string, roomId: string, participantSid: string) {
-		// Get broadcsting and recording list
+		// Get broadcasting and recording list
 		const [broadcastingList, recordingInfo] = await Promise.all([
 			this.broadcastingService.getAllBroadcastingsByRoom(roomName, roomId),
 			this.recordingService.getAllRecordingsByRoom(roomName, roomId)

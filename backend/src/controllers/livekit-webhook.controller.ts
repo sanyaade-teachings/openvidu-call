@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
 import { LoggerService } from '../services/logger.service.js';
-import { WebhookService } from '../services/webhook.service.js';
+import { LivekitWebhookService } from '../services/livekit-webhook.service.js';
 import { RoomService } from '../services/room.service.js';
 import { WebhookEvent } from 'livekit-server-sdk';
+import { OpenViduWebhookService } from '../services/openvidu-webhook.service.js';
 
-const webhookService = WebhookService.getInstance();
+const lkWebhookService = LivekitWebhookService.getInstance();
+const ovWebhookService = OpenViduWebhookService.getInstance();
 const roomService = RoomService.getInstance();
 const logger = LoggerService.getInstance();
 
-export const webhookHandler = async (req: Request, res: Response) => {
+export const lkWebhookHandler = async (req: Request, res: Response) => {
 	try {
-		const webhookEvent: WebhookEvent = await webhookService.getEventFromWebhook(
+		const webhookEvent: WebhookEvent = await lkWebhookService.getEventFromWebhook(
 			req.body,
 			req.get('Authorization')!
 		);
@@ -35,13 +37,16 @@ export const webhookHandler = async (req: Request, res: Response) => {
 		switch (eventType) {
 			case 'egress_started':
 			case 'egress_updated':
-				await webhookService.handleEgressUpdated(egressInfo!);
+				await lkWebhookService.handleEgressUpdated(egressInfo!);
 				break;
 			case 'egress_ended':
-				await webhookService.handleEgressEnded(egressInfo!);
+				await lkWebhookService.handleEgressEnded(egressInfo!);
 				break;
 			case 'participant_joined':
-				await webhookService.handleParticipantJoined(room!, participant!);
+				await lkWebhookService.handleParticipantJoined(room!, participant!);
+				break;
+			case 'room_finished':
+				await ovWebhookService.sendRoomFinishedWebhook(room!);
 				break;
 			default:
 				break;

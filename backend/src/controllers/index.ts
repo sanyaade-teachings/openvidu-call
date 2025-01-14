@@ -4,4 +4,4 @@ export * from './global-preferences/global-preferences.controller.js';
 export * from './healthcheck.controller.js';
 export * from './recording.controller.js';
 export * from './room.controller.js';
-export * from './webhook.controller.js';
+export * from './livekit-webhook.controller.js';
