@@ -3,16 +3,29 @@
  * mechanism (e.g., Database or S3), based on the configuration of the application.
  */
 
-import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
+import { PreferencesStorage } from './global-preferences-storage.interface.js';
 import { S3PreferenceStorage } from './s3-preferences-storage.js';
 import { CALL_PREFERENCES_STORAGE_MODE } from '../../config.js';
+import { inject, injectable } from '../../config/dependency-injector.config.js';
+import { LoggerService } from '../logger.service.js';
 
+@injectable()
 export class GlobalPreferencesStorageFactory {
-	static create(): GlobalPreferencesStorage {
-		if (CALL_PREFERENCES_STORAGE_MODE === 's3') {
-			return new S3PreferenceStorage();
-		}
+	constructor(
+		@inject(S3PreferenceStorage) protected s3PreferenceStorage: S3PreferenceStorage,
+		@inject(LoggerService) protected logger: LoggerService
+	) {}
 
-        throw new Error('Invalid preferences storage mode');
+	create(): PreferencesStorage {
+		const storageMode = CALL_PREFERENCES_STORAGE_MODE;
+
+		switch (storageMode) {
+			case 's3':
+				return this.s3PreferenceStorage;
+
+			default:
+				this.logger.info('No preferences storage mode specified. Defaulting to S3.');
+				return this.s3PreferenceStorage;
+		}
 	}
 }

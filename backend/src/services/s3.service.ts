@@ -25,13 +25,14 @@ import {
 import { errorS3NotAvailable, internalError } from '../models/error.model.js';
 import { Readable } from 'stream';
 import { LoggerService } from './logger.service.js';
+import { inject, injectable } from '../config/dependency-injector.config.js';
 
+@injectable()
 export class S3Service {
 	protected s3: S3Client;
-	protected logger = LoggerService.getInstance();
-	protected static instance: S3Service;
 
-	constructor() {
+	constructor(@inject(LoggerService) protected logger: LoggerService) {
+		console.log('CE S3Service constructor');
 		const config: S3ClientConfig = {
 			region: CALL_AWS_REGION,
 			credentials: {
@@ -43,14 +44,6 @@ export class S3Service {
 		};
 
 		this.s3 = new S3Client(config);
-	}
-
-	static getInstance() {
-		if (!S3Service.instance) {
-			S3Service.instance = new S3Service();
-		}
-
-		return S3Service.instance;
 	}
 
 	/**

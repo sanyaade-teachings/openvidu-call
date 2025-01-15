@@ -1,3 +1,4 @@
+import { inject, injectable } from '../config/dependency-injector.config.js';
 import {
 	AccessToken,
 	EgressClient,
@@ -5,7 +6,6 @@ import {
 	EncodedFileOutput,
 	ListEgressOptions,
 	ParticipantInfo,
-	Room,
 	RoomCompositeOptions,
 	RoomServiceClient,
 	StreamOutput,
@@ -16,24 +16,15 @@ import { LoggerService } from './logger.service.js';
 import { errorLivekitIsNotAvailable, errorParticipantAlreadyExists, internalError } from '../models/error.model.js';
 import { TokenOptions } from '@typings-ce';
 
+@injectable()
 export class LiveKitService {
-	protected static instance: LiveKitService;
 	private egressClient: EgressClient;
 	private roomClient: RoomServiceClient;
-	private logger: LoggerService = LoggerService.getInstance();
 
-	private constructor() {
+	constructor(@inject(LoggerService) protected logger: LoggerService) {
 		const livekitUrlHostname = LIVEKIT_URL_PRIVATE.replace(/^ws:/, 'http:').replace(/^wss:/, 'https:');
 		this.egressClient = new EgressClient(livekitUrlHostname, LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
 		this.roomClient = new RoomServiceClient(livekitUrlHostname, LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
-	}
-
-	static getInstance() {
-		if (!LiveKitService.instance) {
-			LiveKitService.instance = new LiveKitService();
-		}
-
-		return LiveKitService.instance;
 	}
 
 	async generateToken(options: TokenOptions): Promise<string> {

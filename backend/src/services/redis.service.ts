@@ -1,3 +1,4 @@
+import { injectable } from '../config/dependency-injector.config.js';
 import * as config from '../config.js';
 import { Redis, RedisOptions, SentinelAddress } from 'ioredis';
 import {
@@ -12,27 +13,17 @@ import {
 } from '../config.js';
 import { internalError } from '../models/error.model.js';
 
+@injectable()
 export class RedisService {
-	protected static instance: RedisService;
+	protected readonly DEFAULT_TTL: number = 32 * 60 * 60 * 24; // 32 days
+	protected redis: Redis;
 
-	private readonly DEFAULT_TTL: number = 32 * 60 * 60 * 24; // 32 days
-
-	redis: Redis;
-
-	private constructor() {
+	constructor() {
 		const redisOptions = this.loadRedisConfig();
 		this.redis = new Redis(redisOptions);
 
 		this.redis.on('connect', () => console.log('Connected to Redis'));
 		this.redis.on('error', (e) => console.log('Error Redis', e.message));
-	}
-
-	static getInstance() {
-		if (!RedisService.instance) {
-			RedisService.instance = new RedisService();
-		}
-
-		return RedisService.instance;
 	}
 
 	/**
@@ -96,7 +87,6 @@ export class RedisService {
 	// 		throw internalError(error);
 	// 	}
 	// }
-
 
 	/**
 	 * Sets a value in Redis with an optional TTL (time-to-live).

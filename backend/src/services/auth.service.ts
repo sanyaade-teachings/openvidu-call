@@ -8,19 +8,11 @@ import {
 	LIVEKIT_API_SECRET
 } from '../config.js';
 import { AccessToken, AccessTokenOptions, TokenVerifier } from 'livekit-server-sdk';
+import { injectable } from '../config/dependency-injector.config.js';
 
+@injectable()
 export class AuthService {
-	protected static instance: AuthService;
-
-	private constructor() {}
-
-	static getInstance() {
-		if (!AuthService.instance) {
-			AuthService.instance = new AuthService();
-		}
-
-		return AuthService.instance;
-	}
+	constructor() {}
 
 	generateAdminToken() {
 		const options: AccessTokenOptions = {
@@ -30,7 +22,6 @@ export class AuthService {
 			})
 		};
 		const at = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, options);
-
 		return at.toJwt();
 	}
 

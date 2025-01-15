@@ -4,14 +4,16 @@ import { LivekitWebhookService } from '../services/livekit-webhook.service.js';
 import { RoomService } from '../services/room.service.js';
 import { WebhookEvent } from 'livekit-server-sdk';
 import { OpenViduWebhookService } from '../services/openvidu-webhook.service.js';
-
-const lkWebhookService = LivekitWebhookService.getInstance();
-const ovWebhookService = OpenViduWebhookService.getInstance();
-const roomService = RoomService.getInstance();
-const logger = LoggerService.getInstance();
+import { container } from '../config/dependency-injector.config.js';
 
 export const lkWebhookHandler = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	try {
+		const lkWebhookService = container.get(LivekitWebhookService);
+		const roomService = container.get(RoomService);
+		const ovWebhookService = container.get(OpenViduWebhookService);
+
 		const webhookEvent: WebhookEvent = await lkWebhookService.getEventFromWebhook(
 			req.body,
 			req.get('Authorization')!

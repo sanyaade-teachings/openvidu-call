@@ -1,16 +1,17 @@
+import { container } from '../../config/dependency-injector.config.js';
 import { Request, Response } from 'express';
 import { LoggerService } from '../../services/logger.service.js';
 import { GlobalPreferencesService } from '../../services/preferences/index.js';
 import { OpenViduCallError } from '../../models/error.model.js';
 
-const logger = LoggerService.getInstance();
-
 export const updateRoomPreferences = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	logger.verbose(`Updating room preferences: ${JSON.stringify(req.body)}`);
 	const roomPreferences = req.body;
 
 	try {
-		const preferenceService = GlobalPreferencesService.getInstance();
+		const preferenceService = container.get(GlobalPreferencesService);
 		preferenceService.validateRoomPreferences(roomPreferences);
 
 		const savedPreferences = await preferenceService.updateRoomPreferences(roomPreferences);
@@ -30,8 +31,10 @@ export const updateRoomPreferences = async (req: Request, res: Response) => {
 };
 
 export const getRoomPreferences = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	try {
-		const preferenceService = GlobalPreferencesService.getInstance();
+		const preferenceService = container.get(GlobalPreferencesService);
 		const preferences = await preferenceService.getRoomPreferences();
 
 		if (!preferences) {

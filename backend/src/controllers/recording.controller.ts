@@ -2,11 +2,11 @@ import { Request, Response } from 'express';
 import { LoggerService } from '../services/logger.service.js';
 import { OpenViduCallError } from '../models/error.model.js';
 import { RecordingService } from '../services/recording.service.js';
-
-const recordingService = RecordingService.getInstance();
-const logger = LoggerService.getInstance();
+import { container } from '../config/dependency-injector.config.js';
 
 export const startRecording = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	const roomName = req.body.roomName;
 
 	if (!roomName) {
@@ -15,6 +15,8 @@ export const startRecording = async (req: Request, res: Response) => {
 
 	try {
 		logger.info(`Starting recording in ${roomName}`);
+		const recordingService = container.get(RecordingService);
+
 		const recordingInfo = await recordingService.startRecording(roomName);
 		return res.status(200).json(recordingInfo);
 	} catch (error) {
@@ -28,6 +30,7 @@ export const startRecording = async (req: Request, res: Response) => {
 };
 
 export const stopRecording = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
 	const recordingId = req.params.recordingId;
 
 	if (!recordingId) {
@@ -38,6 +41,8 @@ export const stopRecording = async (req: Request, res: Response) => {
 
 	try {
 		logger.info(`Stopping recording ${recordingId}`);
+		const recordingService = container.get(RecordingService);
+
 		const recordingInfo = await recordingService.stopRecording(recordingId);
 		return res.status(200).json(recordingInfo);
 	} catch (error) {
@@ -55,8 +60,12 @@ export const stopRecording = async (req: Request, res: Response) => {
  * !WARNING: This will be removed in future versions
  */
 export const getAllRecordings = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	try {
 		logger.info('Getting all recordings');
+		const recordingService = container.get(RecordingService);
+
 		// const continuationToken = req.query.continuationToken as string;
 		const response = await recordingService.getAllRecordings();
 		return res
@@ -73,6 +82,8 @@ export const getAllRecordings = async (req: Request, res: Response) => {
 };
 
 export const streamRecording = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	const recordingId = req.params.recordingId;
 	const range = req.headers.range;
 
@@ -84,6 +95,8 @@ export const streamRecording = async (req: Request, res: Response) => {
 
 	try {
 		logger.info(`Streaming recording ${recordingId}`);
+		const recordingService = container.get(RecordingService);
+
 		const { fileSize, fileStream, start, end } = await recordingService.getRecordingAsStream(recordingId, range);
 
 		if (range && fileSize && start !== undefined && end !== undefined) {
@@ -121,6 +134,7 @@ export const streamRecording = async (req: Request, res: Response) => {
 };
 
 export const deleteRecording = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
 	const recordingId = req.params.recordingId;
 
 	if (!recordingId) {
@@ -131,6 +145,8 @@ export const deleteRecording = async (req: Request, res: Response) => {
 
 	try {
 		logger.info(`Deleting recording ${recordingId}`);
+		const recordingService = container.get(RecordingService);
+
 		const isRequestedByAdmin = req.url.includes('admin');
 		const recordingInfo = await recordingService.deleteRecording(recordingId, isRequestedByAdmin);
 

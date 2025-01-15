@@ -5,29 +5,20 @@
 
 import { GlobalPreferences, RoomPreferences } from '@typings-ce';
 import { LoggerService } from '../logger.service.js';
-import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
+import { PreferencesStorage } from './global-preferences-storage.interface.js';
 import { GlobalPreferencesStorageFactory } from './global-preferences.factory.js';
 import { OpenViduCallError } from '../../models/error.model.js';
 import { CALL_NAME_ID } from '../../config.js';
+import { injectable, inject } from '../../config/dependency-injector.config.js';
 
+@injectable()
 export class GlobalPreferencesService<T extends GlobalPreferences = GlobalPreferences> {
-	protected logger = LoggerService.getInstance();
-	protected static instance: GlobalPreferencesService;
-	protected storage: GlobalPreferencesStorage;
-	protected constructor() {
-		this.storage = GlobalPreferencesStorageFactory.create();
-	}
-
-	static getInstance() {
-		if (!GlobalPreferencesService.instance) {
-			GlobalPreferencesService.instance = new GlobalPreferencesService();
-		}
-
-		return GlobalPreferencesService.instance;
-	}
-
-	static setInstance(instance: GlobalPreferencesService) {
-		GlobalPreferencesService.instance = instance;
+	protected storage: PreferencesStorage;
+	constructor(
+		@inject(LoggerService) protected logger: LoggerService,
+		@inject(GlobalPreferencesStorageFactory) protected storageFactory: GlobalPreferencesStorageFactory
+	) {
+		this.storage = this.storageFactory.create();
 	}
 
 	/**

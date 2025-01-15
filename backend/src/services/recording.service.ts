@@ -21,21 +21,17 @@ import { RecordingInfo, RecordingStatus } from '../models/recording.model.js';
 import { RecordingHelper } from '../helpers/recording.helper.js';
 import { CALL_S3_BUCKET } from '../config.js';
 import { RoomService } from './room.service.js';
+import { inject, injectable } from '../config/dependency-injector.config.js';
 
+@injectable()
 export class RecordingService {
-	protected static instance: RecordingService;
-	private livekitService = LiveKitService.getInstance();
-	private roomService = RoomService.getInstance();
-	private s3Service = S3Service.getInstance();
-	private logger = LoggerService.getInstance();
 
-	static getInstance() {
-		if (!RecordingService.instance) {
-			RecordingService.instance = new RecordingService();
-		}
-
-		return RecordingService.instance;
-	}
+	constructor(
+		@inject(S3Service) protected s3Service: S3Service,
+		@inject(LiveKitService) protected livekitService: LiveKitService,
+		@inject(RoomService) protected roomService: RoomService,
+		@inject(LoggerService) protected logger: LoggerService
+	) {}
 
 	async startRecording(roomName: string): Promise<RecordingInfo> {
 		try {

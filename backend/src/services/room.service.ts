@@ -1,24 +1,16 @@
+import { inject, injectable } from '../config/dependency-injector.config.js';
 import { CreateOptions, DataPacket_Kind, Room, RoomServiceClient, SendDataOptions } from 'livekit-server-sdk';
 import { LoggerService } from './logger.service.js';
 import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL_PRIVATE, CALL_NAME_ID } from '../config.js';
 import { OpenViduCallError, errorRoomNotFound, internalError } from '../models/error.model.js';
 
+@injectable()
 export class RoomService {
-	private static instance: RoomService;
 	private roomClient: RoomServiceClient;
-	private logger = LoggerService.getInstance();
 
-	private constructor() {
+	constructor(@inject(LoggerService) protected logger: LoggerService) {
 		const livekitUrlHostname = LIVEKIT_URL_PRIVATE.replace(/^ws:/, 'http:').replace(/^wss:/, 'https:');
 		this.roomClient = new RoomServiceClient(livekitUrlHostname, LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
-	}
-
-	static getInstance() {
-		if (!RoomService.instance) {
-			RoomService.instance = new RoomService();
-		}
-
-		return RoomService.instance;
 	}
 
 	/**

@@ -1,9 +1,8 @@
+import { container } from '../../config/dependency-injector.config.js';
 import { Request, Response } from 'express';
 import { CALL_PRIVATE_ACCESS } from '../../config.js';
 import { LoggerService } from '../../services/logger.service.js';
 import { GlobalPreferences } from '@typings-ce';
-
-const logger = LoggerService.getInstance();
 
 // export const getGlobalPreferences = async (req: Request, res: Response) => {
 // 	logger.verbose('Getting global preferences');
@@ -34,6 +33,8 @@ const logger = LoggerService.getInstance();
 
 // TODO: Remove this endpoint
 export const getConfig = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	logger.verbose('Getting config');
 	const response = { isPrivateAccess: CALL_PRIVATE_ACCESS === 'true' };
 	return res.status(200).json(response);

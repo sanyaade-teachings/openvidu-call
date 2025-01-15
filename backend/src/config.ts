@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import chalk from 'chalk';
 
 if (process.env.CALL_CONFIG_DIR) {
 	dotenv.config({ path: process.env.CALL_CONFIG_DIR });
@@ -67,3 +68,63 @@ export function checkModuleEnabled() {
 		}
 	}
 }
+
+
+export const logEnvVars = () => {
+	const credential = chalk.yellow;
+	const text = chalk.cyanBright;
+	const enabled = chalk.greenBright;
+	const disabled = chalk.redBright;
+
+	console.log(' ');
+	console.log('---------------------------------------------------------');
+	console.log('OpenVidu Call Server Configuration');
+	console.log('---------------------------------------------------------');
+	console.log('SERVICE NAME ID: ', text(CALL_NAME_ID));
+	console.log('CORS ORIGIN:', text(SERVER_CORS_ORIGIN));
+	console.log('CALL LOG LEVEL: ', text(CALL_LOG_LEVEL));
+	console.log(
+		'CALL PRIVATE ACCESS: ',
+		CALL_PRIVATE_ACCESS === 'true' ? enabled(CALL_PRIVATE_ACCESS) : disabled(CALL_PRIVATE_ACCESS)
+	);
+
+	if (CALL_PRIVATE_ACCESS === 'true') {
+		console.log('CALL USER: ', credential('****' + CALL_USER.slice(-3)));
+		console.log('CALL SECRET: ', credential('****' + CALL_SECRET.slice(-3)));
+	}
+
+	console.log('CALL ADMIN USER: ', credential('****' + CALL_ADMIN_USER.slice(-3)));
+	console.log('CALL ADMIN PASSWORD: ', credential('****' + CALL_ADMIN_SECRET.slice(-3)));
+	console.log('CALL PREFERENCES STORAGE:', text(CALL_PREFERENCES_STORAGE_MODE));
+
+	console.log('---------------------------------------------------------');
+	console.log('LIVEKIT Configuration');
+	console.log('---------------------------------------------------------');
+	console.log('LIVEKIT URL: ', text(LIVEKIT_URL));
+	console.log('LIVEKIT URL PRIVATE: ', text(LIVEKIT_URL_PRIVATE));
+	console.log('LIVEKIT API SECRET: ', credential('****' + LIVEKIT_API_SECRET.slice(-3)));
+	console.log('LIVEKIT API KEY: ', credential('****' + LIVEKIT_API_KEY.slice(-3)));
+	console.log('---------------------------------------------------------');
+	console.log('S3 Configuration');
+	console.log('---------------------------------------------------------');
+	console.log('CALL S3 BUCKET:', text(CALL_S3_BUCKET));
+	console.log('CALL S3 SERVICE ENDPOINT:', text(CALL_S3_SERVICE_ENDPOINT));
+	console.log('CALL S3 ACCESS KEY:', credential('****' + CALL_S3_ACCESS_KEY.slice(-3)));
+	console.log('CALL S3 SECRET KEY:', credential('****' + CALL_S3_SECRET_KEY.slice(-3)));
+	console.log('CALL AWS REGION:', text(CALL_AWS_REGION));
+	console.log('---------------------------------------------------------');
+	console.log('Redis Configuration');
+	console.log('---------------------------------------------------------');
+	console.log('REDIS HOST:', text(REDIS_HOST));
+	console.log('REDIS PORT:', text(REDIS_PORT));
+	console.log('REDIS USERNAME:', credential('****' + REDIS_USERNAME.slice(-3)));
+	console.log('REDIS PASSWORD:', credential('****' + REDIS_PASSWORD.slice(-3)));
+
+	if (REDIS_SENTINEL_HOST_LIST !== '') {
+		console.log('REDIS SENTINEL IS ENABLED');
+		console.log('REDIS SENTINEL HOST LIST:', text(REDIS_SENTINEL_HOST_LIST));
+	}
+
+	console.log('---------------------------------------------------------');
+	console.log(' ');
+};

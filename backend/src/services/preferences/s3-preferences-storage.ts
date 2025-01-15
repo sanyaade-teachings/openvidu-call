@@ -4,18 +4,22 @@
  */
 
 import { GlobalPreferences } from '@typings-ce';
-import { GlobalPreferencesStorage } from './global-preferences-storage.interface.js';
+import { PreferencesStorage } from './global-preferences-storage.interface.js';
 import { S3Service } from '../s3.service.js';
 import { LoggerService } from '../logger.service.js';
 import { RedisService } from '../redis.service.js';
 import { OpenViduCallError } from '../../models/error.model.js';
+import { inject, injectable  } from '../../config/dependency-injector.config.js';
 
-export class S3PreferenceStorage<T extends GlobalPreferences = GlobalPreferences> implements GlobalPreferencesStorage {
+@injectable()
+export class S3PreferenceStorage<T extends GlobalPreferences = GlobalPreferences> implements PreferencesStorage {
 	protected readonly PREFERENCES_PATH = '.call-preferences';
 	protected readonly PREFERENCES_KEY = 'call-preferences';
-	protected s3Service = S3Service.getInstance();
-	protected redisService = RedisService.getInstance();
-	protected logger = LoggerService.getInstance();
+	constructor(
+		@inject(LoggerService) protected logger: LoggerService,
+		@inject(S3Service) protected s3Service: S3Service,
+		@inject(RedisService) protected redisService: RedisService
+	) {}
 
 	async initialize(defaultPreferences: T): Promise<void> {
 		const existingPreferences = await this.getPreferences();

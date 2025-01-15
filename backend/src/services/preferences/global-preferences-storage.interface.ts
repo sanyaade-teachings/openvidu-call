@@ -3,7 +3,8 @@ import { GlobalPreferences } from '@typings-ce';
 /**
  * Interface for managing global preferences storage.
  */
-export interface GlobalPreferencesStorage<T extends GlobalPreferences = GlobalPreferences> {
+
+export interface PreferencesStorage<T extends GlobalPreferences = GlobalPreferences> {
 	/**
 	 * Initializes the storage with default preferences if they are not already set.
 	 *

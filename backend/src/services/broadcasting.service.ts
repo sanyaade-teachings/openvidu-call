@@ -11,20 +11,16 @@ import { BroadcastingInfo } from '../models/broadcasting.model.js';
 import { BroadcastingHelper } from '../helpers/broadcasting.helper.js';
 import { DataTopic } from '../models/signal.model.js';
 import { RoomService } from './room.service.js';
+import { injectable, inject } from '../config/dependency-injector.config.js';
 
+@injectable()
 export class BroadcastingService {
-	protected static instance: BroadcastingService;
-	private livekitService = LiveKitService.getInstance();
-	private roomService = RoomService.getInstance();
-	private logger = LoggerService.getInstance();
 
-	static getInstance() {
-		if (!BroadcastingService.instance) {
-			BroadcastingService.instance = new BroadcastingService();
-		}
-
-		return BroadcastingService.instance;
-	}
+	constructor(
+		@inject(LiveKitService) protected livekitService: LiveKitService,
+		@inject(RoomService) protected roomService: RoomService,
+		@inject(LoggerService) protected logger: LoggerService
+	) {}
 
 	async startBroadcasting(roomName: string, broadcastUrl: string): Promise<BroadcastingInfo> {
 		try {

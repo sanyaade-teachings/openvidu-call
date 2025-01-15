@@ -1,18 +1,11 @@
+import { inject, injectable } from '../config/dependency-injector.config.js';
 import { Room } from 'livekit-server-sdk';
 import { LoggerService } from './logger.service.js';
 import { CALL_WEBHOOK_URL } from '../config.js';
 
+@injectable()
 export class OpenViduWebhookService {
-	private static instance: OpenViduWebhookService;
-	protected logger = LoggerService.getInstance();
-
-	static getInstance(): OpenViduWebhookService {
-		if (!OpenViduWebhookService.instance) {
-			OpenViduWebhookService.instance = new OpenViduWebhookService();
-		}
-
-		return OpenViduWebhookService.instance;
-	}
+	constructor(@inject(LoggerService) protected logger: LoggerService) {}
 
 	async sendRoomFinishedWebhook(room: Room): Promise<void> {
 		this.logger.verbose(`Sending room finished webhook for room ${room.name}`);

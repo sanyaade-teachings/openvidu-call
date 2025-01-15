@@ -1,13 +1,12 @@
+import { container } from '../config/dependency-injector.config.js';
 import { Request, Response } from 'express';
 import { LoggerService } from '../services/logger.service.js';
 import { OpenViduCallError } from '../models/error.model.js';
 import { BroadcastingService } from '../services/broadcasting.service.js';
 
-const logger = LoggerService.getInstance();
-const broadcastingService = BroadcastingService.getInstance();
-
 export const startBroadcasting = async (req: Request, res: Response) => {
 	const { broadcastUrl, roomName } = req.body;
+	const logger = container.get(LoggerService);
 
 	if (!roomName) {
 		return res.status(400).json({ name: 'Recording Error', message: 'Room name is required for this operation' });
@@ -21,6 +20,7 @@ export const startBroadcasting = async (req: Request, res: Response) => {
 
 	try {
 		logger.info(`Starting broadcasting to ${broadcastUrl}`);
+		const broadcastingService = container.get(BroadcastingService);
 		const broadcastingInfo = await broadcastingService.startBroadcasting(roomName, broadcastUrl);
 		return res.status(200).json(broadcastingInfo);
 	} catch (error) {
@@ -35,6 +35,7 @@ export const startBroadcasting = async (req: Request, res: Response) => {
 
 export const stopBroadcasting = async (req: Request, res: Response) => {
 	const egressId = req.params.broadcastId;
+	const logger = container.get(LoggerService);
 
 	if (!egressId) {
 		return res
@@ -44,6 +45,7 @@ export const stopBroadcasting = async (req: Request, res: Response) => {
 
 	try {
 		logger.info(`Stopping broadcasting ${egressId}`);
+		const broadcastingService = container.get(BroadcastingService);
 		const broadcastingInfo = await broadcastingService.stopBroadcasting(egressId);
 		return res.status(200).json(broadcastingInfo);
 	} catch (error) {

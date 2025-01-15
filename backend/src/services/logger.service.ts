@@ -1,11 +1,12 @@
+import { injectable } from '../config/dependency-injector.config.js';
 import winston from 'winston';
 import { CALL_LOG_LEVEL } from '../config.js';
 
+@injectable()
 export class LoggerService {
-	private static instance: LoggerService;
 	public readonly logger: winston.Logger;
 
-	private constructor() {
+	constructor() {
 		this.logger = winston.createLogger({
 			level: CALL_LOG_LEVEL,
 			format: winston.format.combine(
@@ -15,7 +16,7 @@ export class LoggerService {
 				winston.format.printf((info) => {
 					return `${info.timestamp} [${info.level}] ${info.message}`;
 				}),
-				winston.format.errors({ stack: true }),
+				winston.format.errors({ stack: true })
 				// winston.format.splat(),
 				// winston.format.json()
 			)
@@ -33,14 +34,6 @@ export class LoggerService {
 				})
 			);
 		}
-	}
-
-	public static getInstance(): LoggerService {
-		if (!LoggerService.instance) {
-			LoggerService.instance = new LoggerService();
-		}
-
-		return LoggerService.instance;
 	}
 
 	// Generic method to log messages with a specific level

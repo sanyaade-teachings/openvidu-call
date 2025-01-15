@@ -1,3 +1,4 @@
+import { container } from '../config/dependency-injector.config.js';
 import { Request, Response } from 'express';
 import { LiveKitService } from '../services/livekit.service.js';
 import { LoggerService } from '../services/logger.service.js';
@@ -5,11 +6,11 @@ import { OpenViduCallError } from '../models/error.model.js';
 import { RoomService } from '../services/room.service.js';
 import { TokenOptions } from '@typings-ce';
 
-const livekitService = LiveKitService.getInstance();
-const roomService = RoomService.getInstance();
-const logger = LoggerService.getInstance();
+// const logger = LoggerService.getInstance();
 
 export const createRoom = async (req: Request, res: Response) => {
+	const logger = container.get(LoggerService);
+
 	const tokenOptions: TokenOptions = req.body;
 	const { participantName, roomName } = tokenOptions;
 
@@ -26,6 +27,9 @@ export const createRoom = async (req: Request, res: Response) => {
 		}
 
 		logger.verbose(`Creating room '${roomName}' with participant '${participantName}'`);
+
+		const livekitService = container.get(LiveKitService);
+		const roomService = container.get(RoomService);
 
 		const [token] = await Promise.all([
 			livekitService.generateToken(tokenOptions),

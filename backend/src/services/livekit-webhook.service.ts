@@ -1,3 +1,4 @@
+import { inject, injectable } from '../config/dependency-injector.config.js';
 import { EgressInfo, ParticipantInfo, Room, SendDataOptions, WebhookEvent, WebhookReceiver } from 'livekit-server-sdk';
 import { BroadcastingHelper } from '../helpers/broadcasting.helper.js';
 import { RecordingHelper } from '../helpers/recording.helper.js';
@@ -13,27 +14,19 @@ import { RoomStatusData } from '../models/room.model.js';
 import { BroadcastingService } from './broadcasting.service.js';
 import { RecordingService } from './recording.service.js';
 
+@injectable()
 export class LivekitWebhookService {
-	private static instance: LivekitWebhookService;
-	private livekitService = LiveKitService.getInstance();
-	private s3Service = S3Service.getInstance();
-	private roomService = RoomService.getInstance();
-	private recordingService = RecordingService.getInstance();
-	private broadcastingService = BroadcastingService.getInstance();
-	private logger: LoggerService = LoggerService.getInstance();
-
 	private webhookReceiver: WebhookReceiver;
 
-	private constructor() {
+	constructor(
+		@inject(S3Service) protected s3Service: S3Service,
+		@inject(RecordingService) protected recordingService: RecordingService,
+		@inject(BroadcastingService) protected broadcastingService: BroadcastingService,
+		@inject(LiveKitService) protected livekitService: LiveKitService,
+		@inject(RoomService) protected roomService: RoomService,
+		@inject(LoggerService) protected logger: LoggerService
+	) {
 		this.webhookReceiver = new WebhookReceiver(LIVEKIT_API_KEY, LIVEKIT_API_SECRET);
-	}
-
-	static getInstance(): LivekitWebhookService {
-		if (!LivekitWebhookService.instance) {
-			LivekitWebhookService.instance = new LivekitWebhookService();
-		}
-
-		return LivekitWebhookService.instance;
 	}
 
 	/**
