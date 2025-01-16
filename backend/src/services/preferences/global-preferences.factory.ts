@@ -5,7 +5,7 @@
 
 import { PreferencesStorage } from './global-preferences-storage.interface.js';
 import { S3PreferenceStorage } from './s3-preferences-storage.js';
-import { CALL_PREFERENCES_STORAGE_MODE } from '../../config.js';
+import { CALL_PREFERENCES_STORAGE_MODE } from '../../environment.js';
 import { inject, injectable } from '../../config/dependency-injector.config.js';
 import { LoggerService } from '../logger.service.js';
 

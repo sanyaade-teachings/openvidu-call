@@ -1,6 +1,6 @@
 import { injectable } from '../config/dependency-injector.config.js';
 import winston from 'winston';
-import { CALL_LOG_LEVEL } from '../config.js';
+import { CALL_LOG_LEVEL } from '../environment.js';
 
 @injectable()
 export class LoggerService {

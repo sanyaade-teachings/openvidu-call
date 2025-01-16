@@ -19,7 +19,7 @@ import { DataTopic } from '../models/signal.model.js';
 import { LoggerService } from './logger.service.js';
 import { RecordingInfo, RecordingStatus } from '../models/recording.model.js';
 import { RecordingHelper } from '../helpers/recording.helper.js';
-import { CALL_S3_BUCKET } from '../config.js';
+import { CALL_S3_BUCKET } from '../environment.js';
 import { RoomService } from './room.service.js';
 import { inject, injectable } from '../config/dependency-injector.config.js';
 

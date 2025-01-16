@@ -6,7 +6,7 @@ import { DataTopic } from '../models/signal.model.js';
 import { LiveKitService } from './livekit.service.js';
 import { BroadcastingInfo, BroadcastingStatus } from '../models/broadcasting.model.js';
 import { RecordingInfo, RecordingStatus } from '../models/recording.model.js';
-import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET } from '../config.js';
+import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET } from '../environment.js';
 import { LoggerService } from './logger.service.js';
 import { RoomService } from './room.service.js';
 import { S3Service } from './s3.service.js';

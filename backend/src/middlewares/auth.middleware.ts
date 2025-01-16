@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import basicAuth from 'express-basic-auth';
 
 import { AuthService } from '../services/auth.service.js';
-import { CALL_ADMIN_SECRET, CALL_ADMIN_USER, CALL_PRIVATE_ACCESS, CALL_SECRET, CALL_USER } from '../config.js';
+import { CALL_ADMIN_SECRET, CALL_ADMIN_USER, CALL_PRIVATE_ACCESS, CALL_SECRET, CALL_USER } from '../environment.js';
 
 
 // TODO: Implement the authMiddleware function

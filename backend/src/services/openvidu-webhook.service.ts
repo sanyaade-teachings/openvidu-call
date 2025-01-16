@@ -1,7 +1,7 @@
 import { inject, injectable } from '../config/dependency-injector.config.js';
 import { Room } from 'livekit-server-sdk';
 import { LoggerService } from './logger.service.js';
-import { CALL_WEBHOOK_URL } from '../config.js';
+import { CALL_WEBHOOK_URL } from '../environment.js';
 
 @injectable()
 export class OpenViduWebhookService {

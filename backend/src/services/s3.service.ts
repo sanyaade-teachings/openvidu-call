@@ -21,7 +21,7 @@ import {
 	CALL_S3_SERVICE_ENDPOINT,
 	CALL_S3_SECRET_KEY,
 	CALL_S3_WITH_PATH_STYLE_ACCESS
-} from '../config.js';
+} from '../environment.js';
 import { errorS3NotAvailable, internalError } from '../models/error.model.js';
 import { Readable } from 'stream';
 import { LoggerService } from './logger.service.js';

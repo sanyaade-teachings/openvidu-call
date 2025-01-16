@@ -1,7 +1,7 @@
 import { inject, injectable } from '../config/dependency-injector.config.js';
 import { CreateOptions, DataPacket_Kind, Room, RoomServiceClient, SendDataOptions } from 'livekit-server-sdk';
 import { LoggerService } from './logger.service.js';
-import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL_PRIVATE, CALL_NAME_ID } from '../config.js';
+import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL_PRIVATE, CALL_NAME_ID } from '../environment.js';
 import { OpenViduCallError, errorRoomNotFound, internalError } from '../models/error.model.js';
 
 @injectable()

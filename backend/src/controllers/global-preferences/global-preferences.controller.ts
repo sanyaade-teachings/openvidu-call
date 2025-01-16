@@ -1,6 +1,6 @@
 import { container } from '../../config/dependency-injector.config.js';
 import { Request, Response } from 'express';
-import { CALL_PRIVATE_ACCESS } from '../../config.js';
+import { CALL_PRIVATE_ACCESS } from '../../environment.js';
 import { LoggerService } from '../../services/logger.service.js';
 import { GlobalPreferences } from '@typings-ce';
 

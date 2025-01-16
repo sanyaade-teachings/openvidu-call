@@ -6,7 +6,7 @@ import {
 	CALL_USER,
 	LIVEKIT_API_KEY,
 	LIVEKIT_API_SECRET
-} from '../config.js';
+} from '../environment.js';
 import { AccessToken, AccessTokenOptions, TokenVerifier } from 'livekit-server-sdk';
 import { injectable } from '../config/dependency-injector.config.js';
 

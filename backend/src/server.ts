@@ -4,7 +4,7 @@ import cors from 'cors';
 import chalk from 'chalk';
 import { indexHtmlPath, publicFilesPath } from './utils/path-utils.js';
 import { apiRouter, livekitRouter } from './routes/index.js';
-import { SERVER_PORT, SERVER_CORS_ORIGIN, logEnvVars } from './config.js';
+import { SERVER_PORT, SERVER_CORS_ORIGIN, logEnvVars } from './environment.js';
 import { embeddedRouter } from './routes/embedded.routes.js';
 import { GlobalPreferencesService } from './services/index.js';
 import { swaggerDocs, swaggerUi } from './config/swagger.js';

@@ -1,5 +1,5 @@
 import { injectable } from '../config/dependency-injector.config.js';
-import * as config from '../config.js';
+import * as config from '../environment.js';
 import { Redis, RedisOptions, SentinelAddress } from 'ioredis';
 import {
 	REDIS_DB,
@@ -10,7 +10,7 @@ import {
 	REDIS_SENTINEL_HOST_LIST,
 	REDIS_SENTINEL_PASSWORD,
 	REDIS_USERNAME
-} from '../config.js';
+} from '../environment.js';
 import { internalError } from '../models/error.model.js';
 
 @injectable()

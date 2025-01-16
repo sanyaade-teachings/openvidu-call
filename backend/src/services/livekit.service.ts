@@ -11,7 +11,7 @@ import {
 	StreamOutput,
 	VideoGrant
 } from 'livekit-server-sdk';
-import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL, LIVEKIT_URL_PRIVATE } from '../config.js';
+import { LIVEKIT_API_KEY, LIVEKIT_API_SECRET, LIVEKIT_URL, LIVEKIT_URL_PRIVATE } from '../environment.js';
 import { LoggerService } from './logger.service.js';
 import { errorLivekitIsNotAvailable, errorParticipantAlreadyExists, internalError } from '../models/error.model.js';
 import { TokenOptions } from '@typings-ce';
