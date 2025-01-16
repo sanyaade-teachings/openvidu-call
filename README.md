@@ -4,6 +4,27 @@
 
 OpenVidu Call is a versatile video conferencing application powered by **OpenVidu**, designed to support a wide range of use cases, from personal video calls to professional webinars. Built with **Angular**, OpenVidu Call offers two distinct modes of operation to cater to both non-technical users and developers seeking deep integration with their applications.
 
+# Table of Contents
+
+# Table of Contents
+
+1. [Modes of Use](#modes-of-use)
+   - [Full Mode](#full-mode)
+   - [Embedded Mode (Call Embedded)](#embedded-mode-call-embedded)
+2. [Feature Comparison: CE vs PRO](#feature-comparison-ce-vs-pro)
+3. [Architecture Overview](#architecture-overview)
+   - [Frontend](#frontend)
+   - [Backend](#backend)
+4. [Development](#development)
+   - [1. Clone the Repository](#1-clone-the-openvidu-call-repository)
+   - [2. Prepare the Project](#2-prepare-the-project)
+   - [3. Start the Backend](#3-start-the-backend)
+   - [4. Start the Frontend](#4-start-the-frontend)
+5. [Build (with Docker)](#build-with-docker)
+   - [Build the Backend Image](#build-the-backend-image)
+   - [Run the Backend Container](#run-the-backend-container)
+
+
 ## Modes of Use
 
 ### Full Mode
@@ -68,22 +89,22 @@ The OpenVidu Call application is composed of two main parts (frontend and backen
   Also, the frontend project installs external dependencies on the following libraries:
 
   - [**openvidu-components-angular**](https://github.com/OpenVidu/openvidu/tree/master/openvidu-components-angular): A library of Angular components that provide the core functionality of the video conferencing service.
-  - [**@types/openvidu-call**](https://github.com/OpenVidu/openvidu-call/tree/next/types): A library of common types used by the frontend and backend.
+  - [**typing**](./types/): Common types used by the frontend and backend.
 
 - **Backend**: The backend is a Node.js application.
-  - [**@types/openvidu-call**](https://github.com/OpenVidu/openvidu-call/tree/next/types): A library of common types used by the frontend and backend.
+  - [**typings**](./types/): Common types used by the frontend and backend.
 
 ## Development
 
 For development purposes, you can run the application locally by following the instructions below.
 
-Clone the OpenVidu Call repository:
+**1. Clone the OpenVidu Call repository:**
 
 ```bash
 git clone https://github.com/OpenVidu/openvidu-call.git --branch next
 ```
 
-### Prepare the project
+**2. Prepare the project**
 
 For building types and install dependencies, run the following command:
 
@@ -92,20 +113,38 @@ cd openvidu-call
 ./prepare.sh
 ```
 
-### Backend
+> [!NOTE]
+> **The script prepare and build all necessary dependencies (shared-call-components and typings) for running the frontend and backend.**
+>
+> - For listening to changes to the **shared-call-components** library, you can run the following command:
+>
+>   Stop the frontend server and run the following command:
+>
+>   ```bash
+>   cd openvidu-call/frontend
+>   npm run lib:serve
+>   ```
+>
+>   After that you can run the frontend server again.
+>
+> - For building the **typings**, you can run the following command:
+>
+>   ```bash
+>   cd openvidu-call/types
+>   npm run sync-ce
+>   ```
 
-1. Serve the backend application.
+**3. Start the Backend**
+
 
 ```bash
 cd backend && \
 npm run dev:start
 ```
 
-### Frontend
+**4. Start the Frontend**
 
 Opening a new tab, under root directory:
-
-1. Serve the frontend application.
 
 ```bash
 cd frontend && \
